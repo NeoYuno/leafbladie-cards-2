@@ -18,8 +18,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	--Special Summon
 	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e3:SetProperty(EFFECT_FLAG_DELAY)
+	e3:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
 	e3:SetCode(EVENT_TO_HAND)
 	e3:SetRange(LOCATION_FZONE)
 	e3:SetCondition(s.spcon)
@@ -28,8 +29,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--To hand
 	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e4:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
+	e4:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
 	e4:SetCode(EVENT_TO_GRAVE)
 	e4:SetRange(LOCATION_FZONE)
 	e4:SetTarget(s.thtg)
@@ -82,7 +84,7 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.tgfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local sg=g:Select(tp,1,1,nil)
-	if #sg>0 and Duel.SendtoGrave(sg,REASON_EFFECT)>0 and d:IsRelateToBattle() and d:IsFaceup() and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+	if #sg>0 and Duel.SendtoGrave(sg,REASON_EFFECT)>0 and d:IsRelateToBattle() and d:IsFaceup() and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
         local e1=Effect.CreateEffect(e:GetHandler())
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetCode(EFFECT_SET_ATTACK_FINAL)
@@ -114,11 +116,10 @@ end
 --A cubic monster that was sent to GY by a cubic card's effect or an opponent's effect
 function s.thfilter(c,e,tp)
 	return c:IsSetCard(0xe3) and c:IsMonster() and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsAbleToHand() and c:IsPreviousSetCard(0xe3)
-		and c:IsCanBeEffectTarget(e) and c:IsPreviousPosition(POS_FACEUP)
+		and c:IsCanBeEffectTarget(e) and c:IsPreviousPosition(POS_FACEUP) and c:IsReason(REASON_EFFECT)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	local rc=re:GetHandler()
-	return r&REASON_EFFECT>0 and (rp==tp-1 or rc:IsSetCard(0xe3)) and eg:IsExists(s.thfilter,1,nil,e,tp)
+	return eg:IsExists(s.thfilter,1,nil,e,tp) and ((re:GetHandler():IsSetCard(0xe3) and re:GetHandler()~=e:GetHandler()) or rp==1-tp)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return s.thfilter(chkc,e,tp) end
