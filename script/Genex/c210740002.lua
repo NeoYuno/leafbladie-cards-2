@@ -66,7 +66,7 @@ function s.costfilter(c,tp)
     
 end
 function s.nsfilter(c,att)
-	return c:IsAttribute(att) and c:IsSummonable(true,nil)
+	return c:IsSetCard(0x2) and c:IsAttribute(att) and c:IsSummonable(true,nil)
 end
 function s.nscost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(1)
