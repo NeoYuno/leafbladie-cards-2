@@ -101,7 +101,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local c1,c2=Duel.TossCoin(tp,2)
 	local ct=c1+c2
 	if c:IsRelateToEffect(e) and c:IsAbleToHand() then
-		if c1+c2<2 and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,3113667),tp,LOCATION_FZONE,0,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+		if c1+c2<2 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,3113667),tp,LOCATION_FZONE,0,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 			local ct=0
 			local res={Duel.GetCoinResult()}
 			for i=1,ev do

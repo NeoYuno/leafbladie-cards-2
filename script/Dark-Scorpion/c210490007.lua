@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
+	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
@@ -40,7 +40,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if #g==0 then return end
     if Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)>0 and Duel.Destroy(tc,REASON_EFFECT)>0 then
         local g=Duel.GetMatchingGroup(s.setfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
-		if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,6967870),tp,LOCATION_MZONE,0,1,nil) and #g>0 
+		if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,6967870),tp,LOCATION_MZONE,0,1,nil) and #g>0 
         and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)

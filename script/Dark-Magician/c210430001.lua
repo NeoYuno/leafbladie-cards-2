@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e3:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetTargetRange(0, 1)
+	e3:SetTargetRange(0,1)
 	e3:SetValue(1)
 	e3:SetCondition(s.actcon)
 	c:RegisterEffect(e3)
@@ -51,21 +51,21 @@ end
 s.listed_names={CARD_DARK_MAGICIAN}
 s.listed_series={0x3b}
 --Special summon
-function s.cfilter(c, tp)
+function s.cfilter(c,tp)
 	return (c:IsCode(CARD_DARK_MAGICIAN) or (c:IsSetCard(0x3b) and c:IsType(TYPE_MONSTER))) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
 end
-function s.spcon(e, tp, eg, ep, ev, re, r, rp)
-	return eg:IsExists(s.cfilter, 1, nil, tp)
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.cfilter,1,nil,tp)
 end
-function s.sptg(e, tp, eg, ep, ev, re, r, rp, chk)
-	if chk==0 then return Duel.GetLocationCount(tp, LOCATION_MZONE)>0
-		and e:GetHandler():IsCanBeSpecialSummoned(e, 0, tp, true, false) end
-	Duel.SetOperationInfo(0, CATEGORY_SPECIAL_SUMMON, e:GetHandler(), 1, 0, 0)
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,true,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
-function s.spop(e, tp, eg, ep, ev, re, r, rp)
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	Duel.SpecialSummon(c, 0, tp, tp, true, false, POS_FACEUP)
+	Duel.SpecialSummon(c,0,tp,tp,true,false,POS_FACEUP)
 end
 --Actlimit
 function s.actcon(e)
@@ -75,27 +75,27 @@ end
 function s.atkcon(e)
 	return Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL and e:GetHandler():GetBattleTarget()
 end
-function s.atkval(e, c)
+function s.atkval(e,c)
 	return e:GetHandler():GetBattleTarget():GetAttack()
 end
 --Special summon from GY
-function s.spcost(e, tp, eg, ep, ev, re, r, rp, chk)
+function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToRemoveAsCost() end
-	Duel.Remove(e:GetHandler(), POS_FACEUP, REASON_COST)
+	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST)
 end
-function s.spfilter(c, e, tp)
-	return c:IsCode(CARD_DARK_MAGICIAN) or (c:IsSetCard(0x3b) and c:IsType(TYPE_MONSTER)) and c:IsCanBeSpecialSummoned(e, 0, tp, false, false)
+function s.spfilter(c,e,tp)
+	return c:IsCode(CARD_DARK_MAGICIAN) or (c:IsSetCard(0x3b) and c:IsType(TYPE_MONSTER)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.sptg2(e, tp, eg, ep, ev, re, r, rp, chk)
-	if chk==0 then return Duel.GetLocationCount(tp, LOCATION_MZONE)>-1
-		and Duel.IsExistingMatchingCard(aux.NecroValleyFilter(s.spfilter), tp, LOCATION_GRAVE, 0, 1, nil, e, tp) end
-	Duel.SetOperationInfo(0, CATEGORY_SPECIAL_SUMMON, nil, 1, tp, LOCATION_GRAVE)
+function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>-1
+		and Duel.IsExistingMatchingCard(aux.NecroValleyFilter(s.spfilter),tp,LOCATION_GRAVE,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
 end
-function s.spop2(e, tp, eg, ep, ev, re, r, rp)
-	if Duel.GetLocationCount(tp, LOCATION_MZONE)<=0 then return end
-	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp, aux.NecroValleyFilter(s.spfilter), tp, LOCATION_GRAVE, 0, 1, 1, nil, e, tp)
+function s.spop2(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
 	if #g>0 then
-		Duel.SpecialSummon(g, 0, tp, tp, false, false, POS_FACEUP)
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end

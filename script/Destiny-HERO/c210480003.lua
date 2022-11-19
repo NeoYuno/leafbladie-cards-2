@@ -72,7 +72,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         end
         local fg=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
         local hg=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp)
-		if #fg>0 and fg:FilterCount(aux.FilterFaceupFunction(Card.IsSetCard,0xc008),1,nil)==#fg 
+		if #fg>0 and fg:FilterCount(aux.FaceupFilter(Card.IsSetCard,0xc008),1,nil)==#fg 
 			and #hg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)

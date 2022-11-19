@@ -1,10 +1,10 @@
 --Sorcerer of Dark Illusions
-local s, id=GetID()
+local s,id=GetID()
 function s.initial_effect(c)
     c:EnableReviveLimit()
 	--Fusion materials
-	Fusion.AddProcMix(c, true, true, {CARD_DARK_MAGICIAN, CARD_DARK_MAGICIAN_GIRL}, s.ffilter)
-    Fusion.AddContactProc(c, s.contactfil, s.contactop, s.splimit, nil, nil, nil, false)
+	Fusion.AddProcMix(c,true,true,{CARD_DARK_MAGICIAN, CARD_DARK_MAGICIAN_GIRL},s.ffilter)
+    Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit,nil,nil,nil,false)
     --Immune
     local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -40,34 +40,34 @@ function s.initial_effect(c)
 end
 s.listed_names={CARD_DARK_MAGICIAN, CARD_DARK_MAGICIAN_GIRL}
 --Fusion materials
-function s.ffilter(c, fc, sumtype, tp)
-	return c:IsRace(RACE_SPELLCASTER, fc, sumtype, tp) and c:GetLevel()>=6
+function s.ffilter(c,fc,sumtype,tp)
+	return c:IsRace(RACE_SPELLCASTER,fc,sumtype,tp) and c:GetLevel()>=6
 end
 function s.contactfil(tp)
 	return Duel.GetReleaseGroup(tp)
 end
 function s.contactop(g)
-	Duel.Release(g, REASON_COST+REASON_MATERIAL)
+	Duel.Release(g,REASON_COST+REASON_MATERIAL)
 end
-function s.splimit(e, se, sp, st)
+function s.splimit(e,se,sp,st)
 	return (st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
 end
 --Immune
-function s.efilter(e, te)
+function s.efilter(e,te)
 	return te:IsActiveType(TYPE_TRAP)
 end
 --Negate
-function s.negtg(e, tp, eg, ep, ev, re, r, rp, chk, chkc)
-	if chkc then return chkc:IsOnField() and aux.disfilter3(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(aux.disfilter3, tp, LOCATION_ONFIELD, LOCATION_ONFIELD, 1, nil) end
-	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_NEGATE)
-	local g=Duel.SelectTarget(tp, aux.disfilter3, tp, LOCATION_ONFIELD, LOCATION_ONFIELD, 1, 1, nil)
-	Duel.SetOperationInfo(0, CATEGORY_DISABLE, g, 1, 0, 0)
+function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsOnField() and chkc:IsNegatable() end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsNegatable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_NEGATE)
+	local g=Duel.SelectTarget(tp,Card.IsNegatable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DISABLE,g,1,0,0)
 end
-function s.negop(e, tp, eg, ep, ev, re, r, rp, chk)
+function s.negop(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc and aux.disfilter3(tc) and tc:IsRelateToEffect(e) then
+	if tc and tc:IsNegatable() and tc:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_DISABLE)
@@ -78,10 +78,10 @@ function s.negop(e, tp, eg, ep, ev, re, r, rp, chk)
 		e2:SetCode(EFFECT_DISABLE_EFFECT)
 		e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e2)
-		if tc:IsType(TYPE_TRAP) and Duel.SelectYesNo(tp, aux.Stringid(id, 2)) then
-            local g=Duel.SelectMatchingCard(tp, Card.IsAbleToDeck, tp, LOCATION_ONFIELD, LOCATION_ONFIELD, 1, 1, nil)
+		if tc:IsType(TYPE_TRAP) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+            local g=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
             if #g>0 then
-                Duel.SendtoDeck(g, nil, SEQ_DECKSHUFFLE, REASON_EFFECT)
+                Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
             end
         end
 	end
@@ -90,18 +90,18 @@ end
 function s.atkfilter(c)
 	return c:IsFaceup() and c:IsRace(RACE_SPELLCASTER)
 end
-function s.atktg(e, tp, eg, ep, ev, re, r, rp, chk, chkc)
+function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, nil)
-		and Duel.IsExistingMatchingCard(s.atkfilter, tp, LOCATION_GRAVE, 0, 1, nil) end
-	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_FACEUP)
-	Duel.SelectTarget(tp, Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, 1, nil)
+	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil)
+		and Duel.IsExistingMatchingCard(s.atkfilter,tp,LOCATION_GRAVE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 end
-function s.atkop(e, tp, eg, ep, ev, re, r, rp)
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
-		local atkval=Duel.GetMatchingGroupCount(s.atkfilter, tp, LOCATION_GRAVE, 0, nil)*500
+		local atkval=Duel.GetMatchingGroupCount(s.atkfilter,tp,LOCATION_GRAVE,0,nil)*500
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)

@@ -6,7 +6,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_DUEL)
+	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_DUEL)
     e1:SetCondition(s.spcon)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
@@ -15,7 +15,7 @@ end
 s.listed_names={76922029}
 s.listed_series={0x1a}
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-    return not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x1a),tp,0,LOCATION_MZONE,1,nil)
+    return not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x1a),tp,0,LOCATION_MZONE,1,nil)
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x1a) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)

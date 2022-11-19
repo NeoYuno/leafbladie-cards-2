@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_ACTIVATE)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e2:SetCode(EVENT_CHAINING)
-	e2:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
+	e2:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	e2:SetCondition(s.ngcon)
 	e2:SetTarget(s.ngtg)
 	e2:SetOperation(s.ngop)
@@ -22,7 +22,7 @@ end
 s.listed_names={76922029}
 s.listed_series={0x1a}
 function s.actcon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,76922029),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,76922029),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 function s.confilter(c)
     return c:IsFaceup() and c:IsCode(76922029) or (c:IsSetCard(0x1a) and c:IsType(TYPE_MONSTER))

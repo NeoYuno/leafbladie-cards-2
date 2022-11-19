@@ -42,7 +42,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:GetFirst()==e:GetHandler():GetEquipTarget()
 end
 function s.spfilter(c,e,tp,fc)
-	return (aux.IsCodeListed(c,68540058,12503902,210363002) and c:IsMonster()) or (fc and c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_MACHINE)) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
+	return (c:ListsCode(68540058,12503902,210363002) and c:IsMonster()) or (fc and c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_MACHINE)) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 function s.fieldcond(c)
 	return c:IsFaceup() and c:IsCode(3113667)

@@ -85,7 +85,7 @@ function s.costop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RemoveCounter(tp,COUNTER_SPELL,2,REASON_EFFECT)
 end
 function s.tdfilter(c,e)
-	return (c:IsCode(CARD_DARK_MAGICIAN) or aux.IsCodeListed(c,CARD_DARK_MAGICIAN, CARD_DARK_MAGICIAN_GIRL))
+	return (c:IsCode(CARD_DARK_MAGICIAN) or c:ListsCode(CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL))
      and c:IsAbleToDeck() and (not e or c:IsCanBeEffectTarget(e)) and not c:IsCode(id)
 end
 function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
