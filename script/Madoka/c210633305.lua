@@ -130,7 +130,7 @@ function s.limop(e,tp,eg,ep,ev,re,r,rp)
 	-- Prevent the effect from being activated again, since it wouldn't do anything.
 	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
 end
-s.actfilter=aux.FilterFaceupFunction(Card.IsSetCard,0xf72)
+s.actfilter=aux.FaceupFilter(Card.IsSetCard,0xf72)
 function s.actop1(e,tp,eg,ep,ev,re,r,rp)
 	if eg and eg:IsExists(s.actfilter,1,nil) then
 	    Duel.SetChainLimitTillChainEnd(s.chainlm)
@@ -235,7 +235,7 @@ function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 	return (r&REASON_EFFECT+REASON_BATTLE)~=0
 end
 function s.setfilter(c)
-	return c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and aux.IsCodeListed(c,id)
+	return c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and c:ListsCode(id)
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil) end

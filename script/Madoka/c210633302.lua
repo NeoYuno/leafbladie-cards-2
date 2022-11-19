@@ -183,7 +183,7 @@ function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 	return (r&REASON_EFFECT+REASON_BATTLE)~=0
 end
 function s.setfilter(c)
-	return c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and aux.IsCodeListed(c,id)
+	return c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and c:ListsCode(id)
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -194,6 +194,6 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.setfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.SSet(tp,g)
-		--Duel.ConfirmCards(1-tp,g)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end

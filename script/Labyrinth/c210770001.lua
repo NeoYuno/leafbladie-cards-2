@@ -33,7 +33,7 @@ function s.initial_effect(c)
 end
 s.listed_names={25955164,62340868,98434877,210770012,id}
 function s.thfilter(c)
-	return (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) 
+	return (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) 
 		and not c:IsCode(id) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -50,12 +50,12 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.thfilter2(c,e,tp,ft)
-	return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) 
+	return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) 
         and c:IsAbleToHand() and (ft>0 or c:GetSequence()<5)
 		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,nil,e,tp,c:GetCode())
 end
 function s.spfilter(c,e,tp,code)
-	return (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877))
+	return (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877))
         and not c:IsCode(code) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -89,5 +89,5 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.con(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210770012),tp,LOCATION_FZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210770012),tp,LOCATION_FZONE,0,1,nil)
 end

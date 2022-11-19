@@ -25,14 +25,14 @@ function s.initial_effect(c)
 end
 s.listed_names={25955164,62340868,98434877,25833572}
 function s.filter(c)
-    return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877))
+    return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877))
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil) end
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,25833572),tp,LOCATION_MZONE,0,1,nil) then
+    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,25833572),tp,LOCATION_MZONE,0,1,nil) then
         Duel.PayLPCost(1-tp,math.floor(Duel.GetLP(1-tp)/2))
     else
         Duel.PayLPCost(tp,math.floor(Duel.GetLP(tp)/2))
@@ -62,7 +62,7 @@ function s.ftarget(e,c)
 end
 
 function s.spfilter(c,e,tp)
-	return (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+	return (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) end

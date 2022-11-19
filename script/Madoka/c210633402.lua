@@ -155,7 +155,7 @@ function s.setcost(e,tp,eg,ep,ev,re,r,rp,chk)
   Duel.RemoveCounter(tp,LOCATION_ONFIELD,0,COUNTER_SPELL,2,REASON_COST)
 end
 function s.setfilter(c)
-  return aux.IsCodeListed(c,CARD_HOMURA_AKEMI) and
+  return c:ListsCode(CARD_HOMURA_AKEMI) and
     ((c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()) or c:IsType(TYPE_MONSTER))
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)

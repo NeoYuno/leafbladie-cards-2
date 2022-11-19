@@ -61,7 +61,7 @@ function s.tglimit(e,re,c)
 	return not re:GetHandler():GetColumnGroup():IsContains(c)
 end
 function s.etarget(e,c)
-    return not (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) 
+    return not (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) 
 end
 
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
@@ -69,7 +69,7 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local bc=Duel.GetAttackTarget()
 	if not bc then return false end
 	if tc:IsControler(1-tp) then tc,bc=bc,tc end
-	if (tc:IsCode(25833572) or aux.IsCodeListed(tc,25833572)) then
+	if (tc:IsCode(25833572) or tc:ListsCode(25833572)) then
 		e:SetLabelObject(bc)
 		return true
 	else return false end
@@ -100,7 +100,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.filter(c)
-    return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) 
+    return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) 
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp and not Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil)

@@ -76,12 +76,12 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,LOCATION_ONFIELD,0,1,e:GetHandler())
-		and Duel.IsExistingTarget(aux.FilterFaceupFunction(Card.IsCanTurnSet),tp,0,LOCATION_MZONE,1,nil) end
+		and Duel.IsExistingTarget(aux.FaceupFilter(Card.IsCanTurnSet),tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g1=Duel.SelectTarget(tp,nil,tp,LOCATION_ONFIELD,0,1,1,e:GetHandler())
 	e:SetLabelObject(g1:GetFirst())
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_POSCHANGE)
-	local g2=Duel.SelectTarget(tp,aux.FilterFaceupFunction(Card.IsCanTurnSet),tp,0,LOCATION_MZONE,1,1,nil)
+	local g2=Duel.SelectTarget(tp,aux.FaceupFilter(Card.IsCanTurnSet),tp,0,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g1,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_POSITION,g2,1,0,0)
 end

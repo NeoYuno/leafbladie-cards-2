@@ -34,7 +34,7 @@ function s.tzfilter(c)
     return c:IsCode(25955164,62340868,98434877) --and not c:IsForbidden()
 end
 function s.thfilter(c)
-    return c:IsCode(25833572) or aux.IsCodeListed(c,25833572) and c:IsMonster() and c:IsAbleToHand()
+    return c:IsCode(25833572) or c:ListsCode(25833572) and c:IsMonster() and c:IsAbleToHand()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return true end
@@ -85,11 +85,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.actcon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210770012),e:GetHandlerPlayer(),LOCATION_FZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210770012),e:GetHandlerPlayer(),LOCATION_FZONE,0,1,nil)
 end
 
 function s.immfilter(c)
-    return c:IsFaceup() and c:IsCode(25833572) or aux.IsCodeListed(c,25833572)
+    return c:IsFaceup() and c:IsCode(25833572) or c:ListsCode(25833572)
 end
 function s.immtg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(s.immfilter,tp,LOCATION_MZONE,0,1,nil) end

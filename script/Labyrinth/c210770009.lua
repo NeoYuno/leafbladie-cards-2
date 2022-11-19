@@ -38,7 +38,7 @@ function s.initial_effect(c)
 end
 s.listed_names={25955164,62340868,98434877,25833572,id}
 function s.cfilter(c,ft)
-	return (c:IsLocation(LOCATION_HAND) or c:IsFaceup()) and (c:IsCode(25955164,62340868,98434877) or (aux.IsCodeListed(c,25955164,62340868,98434877) and c:IsMonster()))
+	return (c:IsLocation(LOCATION_HAND) or c:IsFaceup()) and (c:IsCode(25955164,62340868,98434877) or (c:ListsCode(25955164,62340868,98434877) and c:IsMonster()))
 		and not c:IsCode(id) and c:IsAbleToGraveAsCost() and (ft>0 or c:GetSequence()<5)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -62,7 +62,7 @@ end
 
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	if not re then return false end
-	return aux.IsCodeListed(re:GetHandler(),25955164,62340868,98434877)
+	return re:GetHandler():ListsCode(25955164,62340868,98434877)
 end
 function s.filter(c,e,tp)
 	return c:IsCode(25833572) and c:IsCanBeSpecialSummoned(e,0,tp,true,false,POS_FACEUP)
@@ -85,12 +85,12 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==1-tp
 end
 function s.thfilter(c)
-    return (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) and (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
+    return (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) and (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.thfilter(chkc) end
     if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil)
-        and Duel.IsExistingMatchingCard(aux.disfilter3,tp,0,LOCATION_ONFIELD,1,nil) end
+        and Duel.IsExistingMatchingCard(Card.IsNegatable,tp,0,LOCATION_ONFIELD,1,nil) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
     local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,1,nil)
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
@@ -99,7 +99,7 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-    local g=Duel.GetMatchingGroup(aux.disfilter3,tp,0,LOCATION_ONFIELD,nil)
+    local g=Duel.GetMatchingGroup(Card.IsNegatable,tp,0,LOCATION_ONFIELD,nil)
 	if tc:IsRelateToEffect(e) and Duel.SendtoHand(tc,nil,REASON_EFFECT)>0 and #g>0 then
         local sc=g:Select(tp,1,1,nil):GetFirst()
 		Duel.NegateRelatedChain(sc,RESET_TURN_SET)

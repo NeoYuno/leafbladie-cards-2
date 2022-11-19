@@ -40,7 +40,7 @@ end
 -- Witch filter that lists the destroyed card.
 function s.ssfilter(c,e,tp,pc)
   return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x1f72) and c:IsCanBeSpecialSummoned(e,0,tp,true,false,POS_FACEUP,(1-tp))
-    and aux.IsCodeListed(c,pc:GetCode())
+    and c:ListsCode(pc:GetCode())
 end
 
 function s.target(e, tp, eg, ep, ev, re, r, rp, chk)

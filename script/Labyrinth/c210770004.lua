@@ -32,7 +32,7 @@ function s.initial_effect(c)
 end
 s.listed_names={25955164,62340868,98434877,210770012}
 function s.filter(c)
-	return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877))
+	return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877))
 end
 function s.atkcon(e)
 	return Duel.IsExistingMatchingCard(s.confilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,e:GetHandler())
@@ -75,5 +75,5 @@ function s.seqop(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function s.con(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210770012),tp,LOCATION_FZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210770012),tp,LOCATION_FZONE,0,1,nil)
 end

@@ -23,14 +23,14 @@ function s.initial_effect(c)
 end
 s.listed_names={25955164,62340868,98434877,210770012,id}
 function s.filter(c)
-	return (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) and not c:IsCode(id) and c:IsAbleToHand() 
+	return (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) and not c:IsCode(id) and c:IsAbleToHand() 
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.spfilter(c,e,tp)
-	return (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
@@ -40,7 +40,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
         local tg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
 		if #tg>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-            and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210770012),tp,LOCATION_FZONE,0,1,nil)
+            and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210770012),tp,LOCATION_FZONE,0,1,nil)
 			and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -51,7 +51,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.repfilter(c,tp)
-	return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or aux.IsCodeListed(c,25955164,62340868,98434877))
+	return c:IsFaceup() and (c:IsCode(25955164,62340868,98434877) or c:ListsCode(25955164,62340868,98434877))
         and c:IsLocation(LOCATION_ONFIELD) and c:IsControler(tp)
 		and not c:IsReason(REASON_REPLACE) and c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp
 end

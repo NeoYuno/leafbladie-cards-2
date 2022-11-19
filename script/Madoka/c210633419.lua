@@ -45,11 +45,11 @@ function s.desfilter(c)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
   Debug.Message(Duel.IsExistingMatchingCard(s.ssfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp))
-  Debug.Message(Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_NAGISA_MOMOE),tp,LOCATION_ONFIELD,0,1,nil))
+  Debug.Message(Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,CARD_NAGISA_MOMOE),tp,LOCATION_ONFIELD,0,1,nil))
   Debug.Message(msg)
   -- Negate successful, control Nagisa, can Special Charlotte, and can destroy 1 card.
 	if Duel.NegateActivation(ev) and Duel.IsExistingMatchingCard(s.ssfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp)
-  and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_NAGISA_MOMOE),tp,LOCATION_ONFIELD,0,1,nil)
+  and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,CARD_NAGISA_MOMOE),tp,LOCATION_ONFIELD,0,1,nil)
   and Duel.IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil)
   and Duel.GetLocationCountFromEx(tp) > 0 then
     Duel.BreakEffect()

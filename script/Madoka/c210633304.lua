@@ -176,7 +176,7 @@ end
 -- Place Ribbon Counters
 function s.rbccost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsCanAddCounter,COUNTER_RIBBON,1),tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsCanAddCounter,COUNTER_RIBBON,1),tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	if chk==0 then return c:IsCanRemoveCounter(tp,COUNTER_SPELL,1,REASON_COST) and #g>0 end
 	local counter_max = 3
 	for i=1,math.min(3,#g) do
@@ -205,7 +205,7 @@ function s.rbcop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=sg:GetFirst()
 	while tc do
 		tc:AddCounter(COUNTER_RIBBON,1)
-		local e1=Effect.CreateEffect(e:GetHandler())
+		-- local e1=Effect.CreateEffect(e:GetHandler())
 		-- e1:SetType(EFFECT_TYPE_SINGLE)
 		-- e1:SetCode(EFFECT_SET_DEFENSE_FINAL)
 		-- e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE) --since it's not part of the monster.
@@ -241,7 +241,7 @@ function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 	return (r&REASON_EFFECT+REASON_BATTLE)~=0
 end
 function s.setfilter(c)
-	return c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and aux.IsCodeListed(c,id)
+	return c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and c:ListsCode(id)
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil) end
