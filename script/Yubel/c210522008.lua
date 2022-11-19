@@ -99,7 +99,7 @@ function s.atklimit(e,c)
 	return c==e:GetHandler()
 end
 function s.tfcond(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsLevelAbove,10),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsLevelAbove,10),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.tftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end

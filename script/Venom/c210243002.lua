@@ -47,7 +47,7 @@ function s.con2(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
-		local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsRace,RACE_REPTILE),tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
+		local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsRace,RACE_REPTILE),tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
         local ct=g:GetClassCount(Card.GetCode)+3
 		if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)<ct then return false end
 		local dg=Duel.GetDecktopGroup(tp,ct)
@@ -59,7 +59,7 @@ function s.thfilter(c)
 	return c:IsSetCard(0x50)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsRace,RACE_REPTILE),tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsRace,RACE_REPTILE),tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
     local ct=g:GetClassCount(Card.GetCode)+3
 	Duel.ConfirmDecktop(tp,ct)
 	local dg=Duel.GetDecktopGroup(tp,ct)
@@ -74,7 +74,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
                 Duel.ShuffleHand(tp)
                 ct=ct-1
             end
-            local fc=Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,54306223),tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+            local fc=Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,54306223),tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
             if ct>0 then
                 if fc and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
                     dg:Sub(sg)

@@ -52,7 +52,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 			local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
 			local sg=g:Select(tp,1,1,nil):GetFirst()
-			aux.PlayFieldSpell(sg,e,tp,eg,ep,ev,re,r,rp)
+			Duel.ActivateFieldSpell(sg,e,tp,eg,ep,ev,re,r,rp)
 		else
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 			local g=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil)
@@ -64,7 +64,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
     local tp=e:GetHandlerPlayer()
-    return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,54306223),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
+    return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,54306223),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
 end
 function s.aclimit(e,re,tp)
 	local tc=re:GetHandler()

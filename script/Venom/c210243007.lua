@@ -25,7 +25,7 @@ function s.ffilter(c)
 	return c:IsSetCard(0x50) or c:IsCode(210243005)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,54306223),tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,54306223),tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
 end
 function s.checkextra(tp,sg,fc)
 	return sg:IsExists(aux.AND(aux.FilterBoolFunction(Card.IsRace,RACE_REPTILE),aux.FilterBoolFunction(Card.IsControler,tp)),1,nil)
