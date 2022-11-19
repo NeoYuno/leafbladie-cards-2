@@ -25,7 +25,7 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp) end
 	local ht=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
-    local ct=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsSetCard,0x3b),tp,LOCATION_ONFIELD,0,nil)
+    local ct=Duel.GetMatchingGroupCount(aux.FaceupFilter(Card.IsSetCard,0x3b),tp,LOCATION_ONFIELD,0,nil)
 	Duel.SetTargetPlayer(tp)
 	Duel.SetTargetParam(5-ht)
     Duel.SetOperationInfo(0,CATEGORY_DICE,nil,0,tp,ct)
@@ -33,7 +33,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,0,tp,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-    local ct=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsSetCard,0x3b),tp,LOCATION_ONFIELD,0,nil)
+    local ct=Duel.GetMatchingGroupCount(aux.FaceupFilter(Card.IsSetCard,0x3b),tp,LOCATION_ONFIELD,0,nil)
     local d=math.min(Duel.TossDice(tp,ct))
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	local ht=Duel.GetFieldGroupCount(p,LOCATION_HAND,0)

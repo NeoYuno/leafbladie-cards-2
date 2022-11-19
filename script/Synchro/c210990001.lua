@@ -45,11 +45,11 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)>0 and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)==0
-        and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(aux.nzatk),tp,0,LOCATION_MZONE,1,nil)
+        and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsNegatable),tp,0,LOCATION_MZONE,1,nil)
 		and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-		local g=Duel.SelectMatchingCard(tp,aux.FilterFaceupFunction(aux.nzatk),tp,0,LOCATION_MZONE,1,e:GetLabel(),nil)
+		local g=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.IsNegatable),tp,0,LOCATION_MZONE,1,e:GetLabel(),nil)
         if #g>0 then
             for tc in aux.Next(g) do
                 local e1=Effect.CreateEffect(c)
