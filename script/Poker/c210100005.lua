@@ -43,7 +43,7 @@ function s.filter(c)
     return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_LIGHT)
 end
 function s.indcon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(s.filter),0,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(s.filter),0,LOCATION_MZONE,0,1,nil)
 end
 function s.etarget(e,c)
     local g=c:GetMaterial()

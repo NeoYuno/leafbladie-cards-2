@@ -35,7 +35,7 @@ function s.initial_effect(c)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e4:SetCode(EVENT_SUMMON_SUCCESS)
 	e4:SetRange(LOCATION_MZONE)
-    e4:SetCountLimit(1,id+100)
+    e4:SetCountLimit(1,{id,1})
 	e4:SetCondition(s.thcon)
 	e4:SetTarget(s.thtg)
 	e4:SetOperation(s.thop)
@@ -86,7 +86,7 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return lg and eg:IsExists(s.cfilter,1,nil,lg)
 end
 function s.thfilter(c)
-	return aux.IsCodeListed(c,CARD_NEOS) and c:IsAbleToHand()
+	return c:ListsCode(CARD_NEOS) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end

@@ -17,15 +17,15 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_PHASE+PHASE_END)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,id+100)
+	e2:SetCountLimit(1,{id,1})
 	e2:SetTarget(s.tdtg)
 	e2:SetOperation(s.tdop)
 	c:RegisterEffect(e2)
 end
 s.listed_names={CARD_JACK_KNIGHT,CARD_KING_KNIGHT,CARD_QUEEN_KNIGHT,id}
 function s.filter(c,deckCount)
-	return not c:IsCode(id) and aux.IsCodeListed(c,CARD_JACK_KNIGHT)
-        and aux.IsCodeListed(c,CARD_KING_KNIGHT) and aux.IsCodeListed(c,CARD_QUEEN_KNIGHT)
+	return not c:IsCode(id) and c:ListsCode(CARD_JACK_KNIGHT)
+        and c:ListsCode(CARD_KING_KNIGHT) and c:ListsCode(CARD_QUEEN_KNIGHT)
 		and (c:IsLocation(LOCATION_DECK) and deckCount>1 or not c:IsLocation(LOCATION_DECK) and c:IsAbleToDeck())
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)

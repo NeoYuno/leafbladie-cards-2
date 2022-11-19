@@ -73,10 +73,10 @@ function s.eqlimit(e,c)
 	return c==e:GetLabelObject()
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0xf102),tp,LOCATION_SZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0xf102),tp,LOCATION_SZONE,0,1,nil)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0xf102),tp,LOCATION_SZONE,0,nil)
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0xf102),tp,LOCATION_SZONE,0,nil)
     Duel.Hint(HINT_CARD,0,id)
 	Duel.Destroy(g,REASON_EFFECT)
 end

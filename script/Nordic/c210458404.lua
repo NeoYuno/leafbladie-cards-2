@@ -64,7 +64,7 @@ end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     local tc=Duel.GetFirstTarget()
-	local g=Duel.GetMatchingGroup(aux.disfilter3,tp,0,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(Card.IsNegatable,tp,0,LOCATION_MZONE,nil)
     local sg=g:Select(tp,1,1,nil)
     Duel.NegateRelatedChain(sg:GetFirst(),RESET_TURN_SET)
     local e1=Effect.CreateEffect(c)
