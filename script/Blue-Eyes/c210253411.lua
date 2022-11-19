@@ -1,13 +1,12 @@
 -- Radiance with Eyes of Blue
 local s, id = GetID()
 function s.initial_effect(c)
-  --activate
+  --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   c:RegisterEffect(e1)
-
-  -- draw
+  --Draw
   local e1 = Effect.CreateEffect(c)
   e1:SetCategory(CATEGORY_DRAW)
   e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
@@ -17,21 +16,18 @@ function s.initial_effect(c)
   e1:SetTarget(s.drawtg)
   e1:SetOperation(s.drawop)
   c:RegisterEffect(e1)
-
-  -- When Normal Summon Blue-Eyes
+  --Search
   local e2 = Effect.CreateEffect(c)
-  e2:SetDescription(aux.Stringid(id, 3))
   e2:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND+CATEGORY_DESTROY)
   e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
   e2:SetCode(EVENT_SUMMON_SUCCESS)
   e2:SetProperty(EFFECT_FLAG_DELAY)
-  e2:SetCountLimit(1, id)
+  e2:SetCountLimit(1,id)
   e2:SetRange(LOCATION_SZONE)
 	e2:SetCondition(s.condition)
   e2:SetTarget(s.target)
   e2:SetOperation(s.operation)
   c:RegisterEffect(e2)
-  -- When Special Summon Blue-Eyes
   local e3 = e2:Clone()
   e3:SetCode(EVENT_SPSUMMON_SUCCESS)
   c:RegisterEffect(e3)
@@ -65,6 +61,7 @@ function s.drawop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 -- Special Summon Blue-Eyes or add Light Tuner
+
 -- Check for Summon of a Blue-Eyes monster.
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
   local tc=eg:GetFirst()
@@ -75,7 +72,7 @@ function s.addfilter(c)
   return c:IsLevel(1) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsType(TYPE_TUNER) and c:IsAbleToHand()
 end
 function s.setfilter(c,ignore)
-	return (aux.IsCodeListed(c,CARD_BLUEEYES_W_DRAGON) or aux.IsCodeListed(c,23995346)) 
+	return (c:ListsCode(CARD_BLUEEYES_W_DRAGON) or c:ListsCode(23995346)) 
   and c:IsType(TYPE_SPELL+TYPE_TRAP) and not c:IsCode(id) and c:IsSSetable(ignore)
 end
 -- Choose option
@@ -84,7 +81,6 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
   local bset=Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil)
   local bdes=Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil)
 	if chk==0 then return badd or bset or bdes end
-
 	local op=0
 	if badd and bset and bdes then
 			op=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1),aux.Stringid(id,2))

@@ -29,11 +29,11 @@ s.listed_series={0x1034}
 s.listed_names={7093411}
 function s.filter(c,e,tp)
 	return c:IsSetCard(0x1034) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-        and not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,c:GetCode()),tp,LOCATION_MZONE,0,1,nil)
+        and not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,c:GetCode()),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.filter2(c,e,tp,code)
 	return c:IsSetCard(0x1034) and not c:IsCode(code) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-	    and not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,c:GetCode()),tp,LOCATION_MZONE,0,1,nil)
+	    and not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,c:GetCode()),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:GetControler()==tp and chkc:GetLocation()==LOCATION_GRAVE and s.filter(chkc,e,tp) end
@@ -41,7 +41,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and Duel.IsExistingTarget(s.filter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
-    if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,7093411),tp,LOCATION_MZONE,0,1,nil)
+    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,7093411),tp,LOCATION_MZONE,0,1,nil)
         and Duel.IsExistingTarget(s.filter2,tp,LOCATION_GRAVE,0,1,g:GetFirst(),e,tp,g:GetFirst():GetCode())
         and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)

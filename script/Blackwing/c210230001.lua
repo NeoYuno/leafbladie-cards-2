@@ -24,8 +24,10 @@ function s.initial_effect(c)
 end
 s.listed_names={9012916}
 s.listed_series={0x33}
+
+--Search
 function s.thfilter(c)
-	return aux.IsCodeListed(c,9012916) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
+	return c:ListsCode(9012916) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -50,6 +52,8 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Damage(tp,700,REASON_EFFECT)
 	end
 end
+
+--Special Summon
 function s.filter(c)
     return c:IsFaceup() and (c:IsCode(9012916) or (c:IsSetCard(0x33) and c:IsType(TYPE_SYNCHRO)))
 end

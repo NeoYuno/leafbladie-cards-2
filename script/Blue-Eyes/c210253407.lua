@@ -1,8 +1,8 @@
 -- Kisara
-local s, id = GetID()
+local s,id=GetID()
 function s.initial_effect(c)
   --Synchro summon
-  Synchro.AddProcedure(c, nil, 2, 2, Synchro.NonTuner(nil), 1, 99)
+  Synchro.AddProcedure(c,nil,2,2,Synchro.NonTuner(nil),1,99)
   c:EnableReviveLimit()
   --act limit
 	local e1=Effect.CreateEffect(c)
@@ -39,6 +39,7 @@ function s.initial_effect(c)
   
 end
 s.listed_series={0xdd}
+
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
 	if not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) or not re:GetHandler():IsControler(tp) then return false end
 	local tg=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
@@ -51,7 +52,6 @@ function s.chainlm(e,rp,tp)
 end
 
 -- [Position Change effect]
-
 function s.postg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsCanChangePosition() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsCanChangePosition,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
@@ -76,6 +76,7 @@ function s.posop(e,tp,eg,ep,ev,re,r,rp)
     tc:RegisterEffect(e2,true)
 	end
 end
+
 -- [Negate targeting effect]
 -- filter cards you control.
 function s.targfilter(c,tp)

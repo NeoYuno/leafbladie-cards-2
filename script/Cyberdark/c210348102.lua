@@ -46,7 +46,7 @@ function s.eqval(ec,c,tp)
 	return ec:IsControler(tp) or ec:IsControler(1-tp)
 end
 function s.equipop(c,e,tp,tc)
-	if not aux.EquipByEffectAndLimitRegister(c,e,tp,tc,nil,true) then return end
+	if not c:EquipByEffectAndLimitRegister(e,tp,tc,nil,true) then return end
 	local atk=tc:GetBaseAttack()
 	if atk>0 then
 		local e2=Effect.CreateEffect(c)

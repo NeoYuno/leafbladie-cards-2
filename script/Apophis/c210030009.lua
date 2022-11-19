@@ -22,6 +22,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_names={26905245,10000010}
+
+--Activate
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0xf100,0x21,0,3000,4,RACE_AQUA,ATTRIBUTE_WATER) end
@@ -67,6 +69,8 @@ end
 function s.limit(e,c)
 	return c:GetCode()~=e:GetHandler():GetCode()
 end
+
+--Search
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return (e:GetHandler():IsReason(REASON_EFFECT) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))
 	    or (e:GetHandler():IsReason(REASON_COST) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))

@@ -14,15 +14,15 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 
-  -- Becomes Fire Pyro.
-  local e2=Effect.CreateEffect(c)
-  e2:SetDescription(aux.Stringid(id,0))
-  e2:SetType(EFFECT_TYPE_QUICK_O)
-  e2:SetCode(EVENT_FREE_CHAIN)
+    -- Becomes Fire Pyro.
+    local e2=Effect.CreateEffect(c)
+    e2:SetDescription(aux.Stringid(id,0))
+    e2:SetType(EFFECT_TYPE_QUICK_O)
+    e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_GRAVE)
-  e2:SetCost(aux.bfgcost)
-  e2:SetOperation(s.fpop)
-  c:RegisterEffect(e2)
+    e2:SetCost(aux.bfgcost)
+    e2:SetOperation(s.fpop)
+    c:RegisterEffect(e2)
 end
 s.listed_names={CARD_OXYGEDDON,CARD_WATER_DRAGON,CARD_HYDROGEDDON}
 
@@ -59,7 +59,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if tc and Duel.SpecialSummon(tc,0,tp,tp,true,true,POS_FACEUP) ~= 0 then
 		tc:CompleteProcedure()
 		local fid=e:GetHandler():GetFieldID()
-    tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,EFFECT_FLAG_CLIENT_HINT,1,fid,aux.Stringid(id,1))
+        tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,EFFECT_FLAG_CLIENT_HINT,1,fid,aux.Stringid(id,1))
 		--Destroy it during the End Phase
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -90,7 +90,7 @@ end
 
 -- Become Fire Pyro
 function s.fpop(e,tp,eg,ep,ev,re,r,rp)
-  local c=e:GetHandler()
+    local c=e:GetHandler()
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CHANGE_ATTRIBUTE)
@@ -99,7 +99,7 @@ function s.fpop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 	local e2=e1:Clone()
-  e2:SetCode(EFFECT_CHANGE_RACE)
-  e2:SetValue(RACE_PYRO)
+    e2:SetCode(EFFECT_CHANGE_RACE)
+    e2:SetValue(RACE_PYRO)
 	Duel.RegisterEffect(e2,tp)
 end

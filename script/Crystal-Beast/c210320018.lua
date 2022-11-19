@@ -17,7 +17,7 @@ function s.filter(c)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_SZONE,0,1,nil)
-	    and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x1034),tp,LOCATION_SZONE,0,2,nil)
+	    and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x1034),tp,LOCATION_SZONE,0,2,nil)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,2) end

@@ -1,9 +1,9 @@
 -- Shaman with Eyes of Blue
 local s,id=GetID()
 function s.initial_effect(c)
-  -- add S/T on target
-  local e1 = Effect.CreateEffect(c)
-  e1:SetDescription(aux.Stringid(id, 0))
+  --Search
+  local e1=Effect.CreateEffect(c)
+  e1:SetDescription(aux.Stringid(id,0))
   e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
   e1:SetType(EFFECT_TYPE_QUICK_O)
   e1:SetRange(LOCATION_MZONE)
@@ -13,10 +13,9 @@ function s.initial_effect(c)
   e1:SetTarget(s.thtg)
   e1:SetOperation(s.thop)
   c:RegisterEffect(e1)
-
-  -- send monster for draw 2
-  local e2 = Effect.CreateEffect(c)
-  e2:SetDescription(aux.Stringid(id, 1))
+  --Draw
+  local e2=Effect.CreateEffect(c)
+  e2:SetDescription(aux.Stringid(id,1))
   e2:SetCategory(CATEGORY_DRAW)
   e2:SetType(EFFECT_TYPE_QUICK_O)
   e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
@@ -28,7 +27,6 @@ function s.initial_effect(c)
   e2:SetOperation(s.drawop)
   c:RegisterEffect(e2)
 end
-
 s.listed_names={CARD_BLUEEYES_W_DRAGON, 23995346}
 s.listed_series={0xdd}
 
@@ -38,7 +36,7 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 end
 -- filter for adding Blue-Eyes S/T.
 function s.thfilter(c)
-	return (aux.IsCodeListed(c,CARD_BLUEEYES_W_DRAGON) or aux.IsCodeListed(c,23995346))
+	return (c:ListsCode(CARD_BLUEEYES_W_DRAGON) or c:ListsCode(23995346))
     and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
 -- check if a Blue-Eyes S/T is in deck.
@@ -79,7 +77,7 @@ function s.drawop(e,tp,eg,ep,ev,re,r,rp)
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
   local tg = Duel.SelectMatchingCard(tp,s.togravefilter,tp,LOCATION_HAND+LOCATION_ONFIELD,0,1,1,nil)
   local tc = tg:GetFirst()
-  if tc and Duel.SendtoGrave(tc, REASON_EFFECT) ~= 0 and tc:IsLocation(LOCATION_GRAVE) then
+  if tc and Duel.SendtoGrave(tc,REASON_EFFECT) ~= 0 and tc:IsLocation(LOCATION_GRAVE) then
   	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
   	Duel.Draw(p,d,REASON_EFFECT)
   end

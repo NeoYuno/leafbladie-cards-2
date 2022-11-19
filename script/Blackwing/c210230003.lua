@@ -1,13 +1,13 @@
 --Blackwing - Roost
 local s,id=GetID()
 function s.initial_effect(c)
-	--activate
+	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
     e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	c:RegisterEffect(e1)
-	--become quick
+	--Become Quick Effect
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetTargetRange(1,0)
 	c:RegisterEffect(e2)
-    --summon
+    --Summon
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_SUMMON+CATEGORY_DAMAGE)
 	e3:SetType(EFFECT_TYPE_IGNITION)
@@ -25,7 +25,7 @@ function s.initial_effect(c)
 	e3:SetTarget(s.nstg)
 	e3:SetOperation(s.nsop)
 	c:RegisterEffect(e3)
-    --damage
+    --Damage
     local e4=Effect.CreateEffect(c)
     e4:SetCategory(CATEGORY_DAMAGE)
     e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -42,6 +42,8 @@ function s.initial_effect(c)
 end
 s.listed_names={9012916}
 s.listed_series={0x33}
+
+--Summon
 function s.confilter(c)
     return c:IsFaceup() and (c:IsCode(9012916) or (c:IsSetCard(0x33) and c:IsType(TYPE_SYNCHRO)))
 end
@@ -67,6 +69,8 @@ function s.nsop(e,tp,eg,ep,ev,re,r,rp)
         Duel.Damage(tp,tc:GetBaseAttack(),REASON_EFFECT)
 	end
 end
+
+--Damage
 function s.dmtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():GetFlagEffect(id)<3 end
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,PLAYER_ALL,700)

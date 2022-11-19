@@ -63,8 +63,9 @@ end
 function s.thfilter(c)
   return c:IsSetCard(0x100) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
-function s.tgyfilter(c,thc)
-  return aux.IsCodeListed(thc,c:GetCode()) and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
+function s.tgyfilter(c,class)
+  return class.listed_names and c:IsCode(table.unpack(class.listed_names))
+      and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -75,12 +76,14 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
   local tc = Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
   if tc and Duel.SendtoHand(tc,tp,REASON_EFFECT)~=0 then
     Duel.ConfirmCards(1-tp,tc)
+    local class=Duel.GetMetatable(tc:GetCode())
+	  if class==nil or class.listed_names==nil then return end
     -- Send a listed monster to GY
-    if Duel.IsExistingMatchingCard(s.tgyfilter,tp,LOCATION_DECK,0,1,nil,tc)
+    if Duel.IsExistingMatchingCard(s.tgyfilter,tp,LOCATION_DECK,0,1,nil,class)
     and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then -- Send a monster from your Deck to the GY?
       Duel.BreakEffect()
-      Duel.Hint(HINT_SELECTMSG, tp, 504) -- Select a card to send to the GY.
-      local sg = Duel.SelectMatchingCard(tp,s.tgyfilter,tp,LOCATION_DECK,0,1,1,nil,tc)
+      Duel.Hint(HINT_SELECTMSG,tp,504) -- Select a card to send to the GY.
+      local sg = Duel.SelectMatchingCard(tp,s.tgyfilter,tp,LOCATION_DECK,0,1,1,nil,class)
       if #sg > 0 then
         Duel.SendtoGrave(sg,REASON_EFFECT)
       end

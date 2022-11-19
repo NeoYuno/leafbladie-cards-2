@@ -63,7 +63,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     if op==0 then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 		local tc=frr:Select(tp,1,1,nil):GetFirst()
-		if aux.PlayFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp) then
+		if Duel.ActivateFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp) then
             local g=Duel.GetMatchingGroup(s.rdfilter,tp,LOCATION_DECK,0,nil,tp)
             if #g==0 or not Duel.SelectYesNo(tp,aux.Stringid(id,3)) then return end
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
@@ -74,7 +74,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     else
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 		local tc=fad:Select(tp,1,1,nil):GetFirst()
-		if aux.PlayFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp) then
+		if Duel.ActivateFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp) then
             local g=Duel.GetMatchingGroup(s.rddfilter,tp,LOCATION_DECK,0,nil,tp)
             if #g==0 or not Duel.SelectYesNo(tp,aux.Stringid(id,4)) then return end
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)

@@ -35,7 +35,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	e1:SetValue(s.efilter)
 	Duel.RegisterEffect(e1,tp,true)
-    if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,68215963),tp,LOCATION_MZONE,0,1,nil) then
+    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,68215963),tp,LOCATION_MZONE,0,1,nil) then
         local e2=Effect.CreateEffect(e:GetHandler())
         e2:SetType(EFFECT_TYPE_FIELD)
         e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)

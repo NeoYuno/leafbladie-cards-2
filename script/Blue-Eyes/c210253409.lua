@@ -1,10 +1,9 @@
 -- Blue-Eyes Paladin of White Dragon
-local s, id = GetID()
+local s,id=GetID()
 function s.initial_effect(c)
   --link summon
   Link.AddProcedure(c,s.matfilter,2,2)
   c:EnableReviveLimit()
-
   -- Ritual Summon from hand or GY.
   local e1=Ritual.CreateProc({handler=c,lvtype=RITPROC_EQUAL,filter=s.ritfilter,extrafil=s.extrafil,extraop=s.extraop,matfilter=s.forcedgroup,location=LOCATION_HAND+LOCATION_GRAVE})
   e1:SetType(EFFECT_TYPE_IGNITION)
@@ -12,7 +11,6 @@ function s.initial_effect(c)
   e1:SetRange(LOCATION_MZONE)
   e1:SetCountLimit(1,id)
   c:RegisterEffect(e1)
-
   local e2=Effect.CreateEffect(c)
   e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
   e2:SetCategory(CATEGORY_DESTROY)
@@ -53,12 +51,10 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   local lnkg = e:GetHandler():GetLinkedGroup()
 	if chk ==0 then	return Duel.GetAttacker()==e:GetHandler() and d~=nil and d:IsRelateToBattle()
     and #lnkg > 0 and Duel.IsExistingTarget(nil,tp,0,LOCATION_MZONE,1,nil) end
-
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,nil,tp,0,LOCATION_MZONE,1,#lnkg,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
-
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetTargetCards(e)
 	if #g>0 then

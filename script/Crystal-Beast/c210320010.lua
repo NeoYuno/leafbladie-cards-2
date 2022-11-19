@@ -47,7 +47,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	if ct1>ct2 then ct1=ct2 end
 	if ct1>ct3 then ct1=ct3 end
 	if ct1==0 then return end
-	if ct3>=ct1 and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,32710364),tp,LOCATION_MZONE,0,1,nil)
+	if ct3>=ct1 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,32710364),tp,LOCATION_MZONE,0,1,nil)
 	    and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		local t={}
 		for i=1,ct1 do t[i]=i end

@@ -32,7 +32,7 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e4:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e4:SetRange(LOCATION_SZONE)
-	e4:SetTargetRange(1, 0)
+	e4:SetTargetRange(1,0)
 	e4:SetCondition(s.econ1)
 	e4:SetValue(s.elimit)
 	c:RegisterEffect(e4)
@@ -44,7 +44,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e6)
 	local e7=e4:Clone()
 	e7:SetCondition(s.econ2)
-	e7:SetTargetRange(0, 1)
+	e7:SetTargetRange(0,1)
 	c:RegisterEffect(e7)
     --Destroy itself
 	local e8=Effect.CreateEffect(c)
@@ -60,10 +60,11 @@ function s.initial_effect(c)
 end
 s.listed_series={0x4}
 --Activate
-function s.condition(e, tp, eg, ep, ev, re, r, rp)
-	local g=Duel.GetFieldGroup(tp, LOCATION_MZONE, 0)
-    return #g>0 and g:FilterCount(aux.FilterFaceupFunction(Card.IsSetCard, 0x4), nil)==#g
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
+    return #g>0 and g:FilterCount(aux.FaceupFilter(Card.IsSetCard,0x4),nil)==#g
 end
+
 --Attacking monsters cannot be destroyed by battle
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
@@ -77,6 +78,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		a:RegisterEffect(e1)
 	end
 end
+
 --Activation limit
 function s.aclimit1(e,tp,eg,ep,ev,re,r,rp)
     local rc=re:GetHandler()
@@ -106,23 +108,24 @@ function s.econ2(e)
 	return e:GetHandler():GetFlagEffect(id+1)>=Duel.GetBattledCount(e:GetHandlerPlayer())
         and Duel.GetTurnPlayer()~=e:GetHandlerPlayer()
 end
-function s.elimit(e, re, tp)
+function s.elimit(e,re,tp)
     local rc=re:GetHandler()
 	return re:IsActiveType(TYPE_MONSTER) and not rc:IsSetCard(0x4)
 end
---
+
+--Self destruction
 function s.filter(c)
     return c:IsFaceup() and c:IsSetCard(0x4) and c:IsLevelAbove(6)
 end
-function s.descon(e, tp, eg, ep, ev, re, r, rp)
-	return not Duel.IsExistingMatchingCard(s.filter, tp, LOCATION_MZONE, 0, 1, nil)
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil)
 end
-function s.destg(e, tp, eg, ep, ev, re, r, rp, chk)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetOperationInfo(0, CATEGORY_DESTROY, e:GetHandler(), 1, 0, 0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetHandler(),1,0,0)
 end
-function s.desop(e, tp, eg, ep, ev, re, r, rp)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) then
-		Duel.Destroy(e:GetHandler(), REASON_EFFECT)
+		Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 	end
 end

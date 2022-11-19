@@ -79,7 +79,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if #g==0 then return end
 	Duel.SendtoHand(g,nil,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,g)
-    if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,32933942),tp,LOCATION_MZONE,0,1,nil)
+    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,32933942),tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil)
 		and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)

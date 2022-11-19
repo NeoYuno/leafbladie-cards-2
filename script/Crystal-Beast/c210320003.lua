@@ -82,7 +82,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 			tc:RegisterEffect(e1)
 		end
 		Duel.RaiseEvent(sg,EVENT_CUSTOM+47408488,e,0,tp,0,0)
-        local g4=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x1034),tp,LOCATION_SZONE,0,nil)
+        local g4=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x1034),tp,LOCATION_SZONE,0,nil)
         if #g4>0 then
             Duel.BreakEffect()
             Duel.Damage(1-tp,#g4*500,REASON_EFFECT)

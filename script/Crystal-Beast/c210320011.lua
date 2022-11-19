@@ -63,7 +63,7 @@ function s.ftarget(e,c)
 	return e:GetLabel()~=c:GetFieldID()
 end
 function s.macon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,69937550),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,69937550),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.maop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()

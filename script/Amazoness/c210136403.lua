@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--fusion materials
-	Fusion.AddProcMix(c, true, true, s.mfilter1, s.mfilter2)
+	Fusion.AddProcMix(c,true,true,s.mfilter1,s.mfilter2)
 	c:EnableReviveLimit()
     --Destroy
 	local e1=Effect.CreateEffect(c)
@@ -41,36 +41,38 @@ end
 s.material_setcode=0x4
 s.listed_series={0x4}
 --fusion materials
-function s.mfilter1(c, fc, sumtype, tp)
-	return c:IsSetCard(0x4, fc, sumtype, tp) and c:IsRace(RACE_WARRIOR)
+function s.mfilter1(c,fc,sumtype,tp)
+	return c:IsSetCard(0x4,fc,sumtype,tp) and c:IsRace(RACE_WARRIOR)
 end
-function s.mfilter2(c, fc, sumtype, tp)
-	return c:IsRace(RACE_BEAST, fc, sumtype, tp) and c:IsLevelBelow(8)
+function s.mfilter2(c,fc,sumtype,tp)
+	return c:IsRace(RACE_BEAST,fc,sumtype,tp) and c:IsLevelBelow(8)
 end
+
 --Destroy
 function s.mfilter(c)
 	return c:IsLevelAbove(7)
 end
-function s.descon(e, tp, eg, ep, ev, re, r, rp)
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	local mg=e:GetHandler():GetMaterial()
-	return mg and e:GetHandler():IsSummonType(SUMMON_TYPE_FUSION) and mg:IsExists(s.mfilter, 1, nil)
+	return mg and e:GetHandler():IsSummonType(SUMMON_TYPE_FUSION) and mg:IsExists(s.mfilter,1,nil)
 end
-function s.destg(e, tp, eg, ep, ev, re, r, rp, chk)
-	local g=Duel.GetFieldGroup(tp, 0, LOCATION_ONFIELD)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local g=Duel.GetFieldGroup(tp,0,LOCATION_ONFIELD)
 	if chk==0 then return #g>0 end
-	Duel.SetOperationInfo(0, CATEGORY_DESTROY, g, #g, 0, 0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
-function s.desop(e, tp, eg, ep, ev, re, r, rp)
-	local g=Duel.GetFieldGroup(tp, 0, LOCATION_ONFIELD)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetFieldGroup(tp,0,LOCATION_ONFIELD)
 	if #g>0 then
-		Duel.Destroy(g, REASON_EFFECT)
+		Duel.Destroy(g,REASON_EFFECT)
 	end
 end
+
 --Change original ATK
-function s.atkcon(e, tp, eg, ep, ev, re, r, rp)
+function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_FUSION)
 end
-function s.atkop(e, tp, eg, ep, ev, re, r, rp)
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local g=c:GetMaterial()
 	local val=0
@@ -87,20 +89,22 @@ function s.atkop(e, tp, eg, ep, ev, re, r, rp)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
 	c:RegisterEffect(e1)
 end
+
 --Immune
 function s.immcon(e)
     local ph=Duel.GetCurrentPhase()
     return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE
 end
-function s.immval(e, te)
+function s.immval(e,te)
 	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:IsActivated()
 end
+
 --Multiple attacks
 function s.valfilter(c)
     return c:GetPreviousSetCard()==0x4 and c:GetPreviousLocation()==LOCATION_MZONE
 end
-function s.value(e, c)
+function s.value(e,c)
 	local g=e:GetHandler():GetMaterial()
-	local ct=g:FilterCount(s.valfilter, nil)
-	return math.max(0, ct)
+	local ct=g:FilterCount(s.valfilter,nil)
+	return math.max(0,ct)
 end

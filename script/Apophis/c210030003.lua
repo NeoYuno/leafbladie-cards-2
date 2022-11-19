@@ -58,6 +58,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
 	end
 end
+
+--Act in hand
 function s.confilter(c,tp)
 	return c:IsSummonLocation(LOCATION_EXTRA) and c:IsInMainMZone(tp)
 end
@@ -67,6 +69,8 @@ end
 function s.acttg(e,c)
 	return c:GetType()==TYPE_TRAP+TYPE_CONTINUOUS and (c:IsSetCard(0xf100) or c:IsCode(table.unpack(TrapMonster)))
 end
+
+--Special Summon
 function s.cfilter(c,e,tp,rp)
 	if c:IsFacedown() or not c:IsCode(89194033,210030008) or not c:IsAttackAbove(4000) or not c:IsAbleToGraveAsCost() then return false end
 	return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_EXTRA,0,1,nil,e,tp,rp,Group.FromCards(c,e:GetHandler()))

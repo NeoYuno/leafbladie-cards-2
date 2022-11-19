@@ -36,6 +36,8 @@ function s.initial_effect(c)
 end
 s.listed_names={9012916}
 s.listed_series={0x33}
+
+--Atk up
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_SYNCHRO)
 end
@@ -60,6 +62,8 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RDComplete()
     end
 end
+
+--Take no damage
 function s.damcon(e)
 	return Duel.IsExistingMatchingCard(Card.IsCode,e:GetHandlerPlayer(),LOCATION_GRAVE,0,1,nil,9012916)
 end
@@ -70,6 +74,8 @@ function s.damval(e,re,val,r,rp,rc)
 		return 0
 	else return val end
 end
+
+--Reduce atk
 function s.filter(c)
 	return c:IsFaceup() and c:IsAttackAbove(100)
 end

@@ -18,7 +18,6 @@ function s.initial_effect(c)
   e2:SetOperation(s.spop)
   c:RegisterEffect(e2)
 end
-
 s.listed_names = {CARD_BLUEEYES_W_DRAGON}
 
 -- Special Summon
@@ -26,7 +25,6 @@ s.listed_names = {CARD_BLUEEYES_W_DRAGON}
 function s.tdfilter(c)
   return c:IsType(TYPE_MONSTER) and c:IsSetCard(0xdd) and c:IsAbleToDeckOrExtraAsCost()
 end
-
 -- Check if enough cards exist and an MZONE space would be free.
 function s.spcon(e,c)
 	if c==nil then return true end
@@ -39,10 +37,10 @@ end
 -- Shuffle the targets back.
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_GRAVE,0,nil)
-	Duel.SendtoDeck(g, nil, SEQ_DECKSHUFFLE, REASON_COST)
+	Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_COST)
   local dg=Duel.GetOperatedGroup()
-  local ct=dg:FilterCount(Card.GetPreviousCodeOnField, nil, CARD_BLUEEYES_W_DRAGON)
-  local atk=g:FilterCount(Card.IsLocation, nil, LOCATION_DECK)
+  local ct=dg:FilterCount(Card.GetPreviousCodeOnField,nil,CARD_BLUEEYES_W_DRAGON)
+  local atk=g:FilterCount(Card.IsLocation,nil,LOCATION_DECK)
   if ct>=1 then
     -- atk for each dragon in your GY
     local e1=Effect.CreateEffect(c)
@@ -90,7 +88,6 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
       c:RegisterEffect(e4)
   end
 end
-
 -- Check if opponent (for indestructible effect)
 function s.indval(e,re,tp)
 	return tp~=e:GetHandlerPlayer()

@@ -1,10 +1,9 @@
 -- Critias, the Blue-Eyes Knight
-local s, id = GetID()
+local s,id=GetID()
 function s.initial_effect(c)
   --link summon
   Link.AddProcedure(c,nil,2,2,s.lcheck)
   c:EnableReviveLimit()
-
   -- Add Fang of Critias and Normal Trap
   local e1=Effect.CreateEffect(c)
   e1:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
@@ -17,7 +16,6 @@ function s.initial_effect(c)
   e1:SetTarget(s.thtg)
   e1:SetOperation(s.thop)
   c:RegisterEffect(e1)
-
   --Set trap from GY
   local e2=Effect.CreateEffect(c)
   e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -30,12 +28,12 @@ function s.initial_effect(c)
   e2:SetOperation(s.setop)
   c:RegisterEffect(e2)
 end
-s.listed_names={CARD_BLUEEYES_W_DRAGON, 11082056}
+s.listed_names={CARD_BLUEEYES_W_DRAGON,11082056}
+
 -- including at least 1 Blue-Eyes White Dragon.
 function s.lcheck(g,lc,tp)
 	return g:IsExists(Card.IsCode,1,nil,CARD_BLUEEYES_W_DRAGON)
 end
-
 -- Add Trap/Critias on Summon
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)

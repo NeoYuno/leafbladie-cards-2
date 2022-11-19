@@ -23,6 +23,8 @@ function s.initial_effect(c)
 	e2:SetOperation(s.op)
 	c:RegisterEffect(e2)
 end
+
+--Activate
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and re:IsActiveType(TYPE_MONSTER) and Duel.IsChainNegatable(ev)
 end
@@ -61,6 +63,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         Duel.Destroy(tc,REASON_EFFECT)
     end
 end
+
+--Discard
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return (e:GetHandler():IsReason(REASON_EFFECT) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))
 	    or (e:GetHandler():IsReason(REASON_COST) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))

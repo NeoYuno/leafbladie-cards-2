@@ -20,6 +20,8 @@ function s.initial_effect(c)
 end
 s.listed_series={0xf100}
 s.listed_names={89194033,29762407}
+
+--Activate
 function s.thfilter(c)
 	return ((c:IsSetCard(0xf100) and c:IsType(TYPE_TRAP)) or c:IsCode(28649820)) and c:IsAbleToHand()
 end
@@ -68,6 +70,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
+
+--Destroy replace
 function s.repfilter(c)
 	return c:IsFaceup() and c:IsCode(29762407) and c:IsOnField() and not c:IsReason(REASON_REPLACE) and c:IsReason(REASON_EFFECT)
 end

@@ -1,5 +1,5 @@
 -- Blue-Eyes Krystal Dragon
-local s, id = GetID()
+local s,id=GetID()
 function s.initial_effect(c)
   -- Special self from hand by bouncing Effect Monster.
   local e1=Effect.CreateEffect(c)
@@ -13,7 +13,6 @@ function s.initial_effect(c)
   e1:SetTarget(s.sptg)
   e1:SetOperation(s.spop)
   c:RegisterEffect(e1)
-
   -- on battle destroy, draw 2 or special Blue-Eyes
   local e2=Effect.CreateEffect(c)
   e2:SetCategory(CATEGORY_DRAW+CATEGORY_SPECIAL_SUMMON)
@@ -24,17 +23,15 @@ function s.initial_effect(c)
   e2:SetOperation(s.operation)
   c:RegisterEffect(e2)
 end
-
 s.listed_names = {CARD_BLUEEYES_W_DRAGON}
+
 -- Special Summon self from hand and bounce the target.
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return not e:GetHandler():IsPublic() end
 end
-
 function s.spfilter(c)
 	return c:IsType(TYPE_MONSTER+TYPE_EFFECT) and c:IsFaceup() and c:IsAbleToHand() and not c:IsCode(id)
 end
-
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and s.spfilter(chkc) end
 	local c=e:GetHandler()
@@ -46,7 +43,6 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
 end
-
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
@@ -63,29 +59,26 @@ function s.discfilter(c)
   return c:IsLevel(1) and c:IsType(TYPE_TUNER) and c:IsAttribute(ATTRIBUTE_LIGHT)
     and c:IsDiscardable()
 end
-
 -- Filter "Blue-Eyes White Dragon"
 function s.bewdfilter(c,e,tp)
   return c:IsCode(CARD_BLUEEYES_W_DRAGON) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-
 -- On Battle Destroy, choose 1.
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return
-    (Duel.IsPlayerCanDraw(tp, 2)
+    (Duel.IsPlayerCanDraw(tp,2)
     and Duel.IsExistingMatchingCard(s.discfilter,tp,LOCATION_HAND,0,1,nil))
     or (Duel.GetLocationCount(tp,LOCATION_MZONE)>0
     and Duel.IsExistingMatchingCard(s.bewdfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,nil,e,tp))
   end
-
   local op=0
   -- if can't activate draw eff, use Special Summon effect.
-  if not Duel.IsPlayerCanDraw(tp, 2) or not Duel.IsExistingMatchingCard(s.discfilter,tp,LOCATION_HAND,0,1,nil) then
-    Duel.SelectOption(tp,aux.Stringid(id, 1))
+  if not Duel.IsPlayerCanDraw(tp,2) or not Duel.IsExistingMatchingCard(s.discfilter,tp,LOCATION_HAND,0,1,nil) then
+    Duel.SelectOption(tp,aux.Stringid(id,1))
     op=1
   -- if can't activate Special Summon eff, use draw effect.
   elseif Duel.GetLocationCount(tp,LOCATION_MZONE) <= 0 or not Duel.IsExistingMatchingCard(s.bewdfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,nil,e,tp) then
-    Duel.SelectOption(tp,aux.Stringid(id, 0))
+    Duel.SelectOption(tp,aux.Stringid(id,0))
     op=0
   -- if can activate both effects, let player choose.
   else

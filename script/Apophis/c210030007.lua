@@ -22,6 +22,8 @@ function s.initial_effect(c)
 	e2:SetOperation(s.op)
 	c:RegisterEffect(e2)
 end
+
+--Activate
 function s.ffilter(c)
 	return c:IsFaceup() and c:IsCode(29762407)
 end
@@ -70,6 +72,8 @@ function s.aclimit(e,re,tp)
 	local loc=re:GetActivateLocation()
 	return (loc==LOCATION_GRAVE or loc==LOCATION_REMOVED) and re:IsActiveType(TYPE_MONSTER)
 end
+
+--Destroy
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return (e:GetHandler():IsReason(REASON_EFFECT) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))
 	    or (e:GetHandler():IsReason(REASON_COST) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))

@@ -48,8 +48,9 @@ end
 function s.thfilter(c)
 	return c:IsSetCard(0x100) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
-function s.ssfilter(c,e,tp,thc)
-  return aux.IsCodeListed(thc,c:GetCode()) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+function s.ssfilter(c,e,tp,class)
+  return class.listed_names and c:IsCode(table.unpack(class.listed_names))
+      and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -61,12 +62,14 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 and Duel.SendtoHand(g,nil,REASON_EFFECT)~=0 then
     local thc=g:GetFirst()
 		Duel.ConfirmCards(1-tp,thc)
+    local class=Duel.GetMetatable(thc:GetCode())
+    if class==nil or class.listed_names==nil then return end
     -- Special Summon a listed monster
-    if Duel.IsExistingMatchingCard(s.ssfilter,tp,LOCATION_DECK,0,1,nil,e,tp,thc)
+    if Duel.IsExistingMatchingCard(s.ssfilter,tp,LOCATION_DECK,0,1,nil,e,tp,class)
     and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then -- Special Summon a monster?
       Duel.BreakEffect()
       Duel.Hint(HINT_SELECTMSG, tp, 509)
-      g = Duel.SelectMatchingCard(tp,s.ssfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,thc)
+      g = Duel.SelectMatchingCard(tp,s.ssfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,class)
       if #g > 0 then
         Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
       end

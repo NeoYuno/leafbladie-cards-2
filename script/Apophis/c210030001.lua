@@ -1,7 +1,7 @@
 --Cup of Serket
 local s,id=GetID()
 function s.initial_effect(c)
-	--Activate
+	--Draw
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_TOGRAVE)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -16,12 +16,14 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,id+100)
+	e2:SetCountLimit(1,{id,1})
     e2:SetCost(aux.bfgcost)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
+
+--Draw
 function s.filter(c)
 	return c:IsType(TYPE_TRAP) and c:IsSummonLocation(LOCATION_SZONE) and c:IsAbleToGrave()
 end
@@ -39,6 +41,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
     Duel.Draw(p,d,REASON_EFFECT)
 end
+
+--Bounce
 function s.thfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_TRAP) and c:IsAbleToHand()
 end

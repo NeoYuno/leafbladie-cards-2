@@ -32,7 +32,7 @@ end
 s.listed_series={0x34,0x1034}
 --Destroy
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x1034),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x1034),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.desfilter(c,e,tp)
     return c:IsFaceup() and c:IsSetCard(0x1034) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,c:GetCode())
@@ -69,7 +69,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 --Activate the turn it is set
 function s.actcon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x1034),e:GetHandlerPlayer(),LOCATION_SZONE,0,2,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x1034),e:GetHandlerPlayer(),LOCATION_SZONE,0,2,nil)
 end
 --Set a "Crystal" Spell/Trap from deck
 function s.setfilter(c,tp)

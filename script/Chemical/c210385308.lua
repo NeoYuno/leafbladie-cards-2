@@ -104,8 +104,8 @@ function s.fireop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 -- Add Chemist or monster
-function s.thfilter(c,gyc)
-  return (c:IsCode(CARD_LEGENDARY_CHEMIST) or aux.IsCodeListed(gyc,c:GetCode()))
+function s.thfilter(c,class)
+  return (c:IsCode(CARD_LEGENDARY_CHEMIST) or (class.listed_names and c:IsCode(table.unpack(class.listed_names))))
     and (c:IsAbleToHand() or c:IsAbleToGrave())
 end
 function s.costfil(c,tp)
@@ -134,9 +134,10 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
   local gyc=e:GetLabelObject()
-
+  local class=Duel.GetMetatable(gyc:GetCode())
+  if class==nil or class.listed_names==nil then return end
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-  local sg=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,gyc)
+  local sg=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,class)
   if #sg > 0 then
     aux.ToHandOrElse(sg,tp)
   end

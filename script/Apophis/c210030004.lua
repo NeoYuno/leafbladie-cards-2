@@ -23,6 +23,8 @@ function s.initial_effect(c)
 end
 s.listed_series={0xf100}
 s.listed_names={89194033,29762407}
+
+--Activate
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0xf100,0x21,1800,1600,4,RACE_REPTILE,ATTRIBUTE_EARTH) end
@@ -65,6 +67,8 @@ end
 function s.efilter(e, re)
 	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
 end
+
+--Search
 function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_SZONE) and c:IsPreviousControler(tp)
 end

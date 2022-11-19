@@ -68,8 +68,9 @@ end
 function s.thfilter1(c)
   return c:IsSetCard(0x100) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
-function s.thfilter2(c,thc)
-  return aux.IsCodeListed(thc,c:GetCode()) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+function s.thfilter2(c,class)
+  return class.listed_names and c:IsCode(table.unpack(class.listed_names))
+      and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
   -- Destroy Fire/Pyro, then burn.
@@ -88,12 +89,14 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
     if #sg > 0 and Duel.SendtoHand(sg,tp,REASON_EFFECT)~=0 then
       local thc=sg:GetFirst()
       Duel.ConfirmCards(1-tp, thc)
+      local class=Duel.GetMetatable(thc:GetCode())
+      if class==nil or class.listed_names==nil then return end
       -- Add a listed monster to hand
-      if Duel.IsExistingMatchingCard(s.thfilter2,tp,LOCATION_DECK,0,1,nil,thc)
+      if Duel.IsExistingMatchingCard(s.thfilter2,tp,LOCATION_DECK,0,1,nil,class)
       and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then -- Add a monster to your hand?
         Duel.BreakEffect()
         Duel.Hint(HINT_SELECTMSG, tp, 506) -- Select a card to add to your hand.
-        sg = Duel.SelectMatchingCard(tp,s.thfilter2,tp,LOCATION_DECK,0,1,1,nil,thc)
+        sg = Duel.SelectMatchingCard(tp,s.thfilter2,tp,LOCATION_DECK,0,1,1,nil,class)
         if #sg > 0 then
           Duel.SendtoHand(sg,tp,REASON_EFFECT)
           Duel.ConfirmCards(1-tp, sg)

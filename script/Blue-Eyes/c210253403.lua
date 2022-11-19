@@ -3,17 +3,16 @@ local s, id = GetID()
 function s.initial_effect(c)
   -- on normal summon, add a Blue-Eyes monster.
   local e1=Effect.CreateEffect(c)
-  e1:SetDescription(aux.Stringid(id, 0))
+  e1:SetDescription(aux.Stringid(id,0))
   e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
   e1:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
   e1:SetCode(EVENT_SUMMON_SUCCESS)
   e1:SetTarget(s.thtg)
   e1:SetOperation(s.thop)
   c:RegisterEffect(e1)
-
   -- hand eff to buff atk
   local e2=Effect.CreateEffect(c)
-  e2:SetDescription(aux.Stringid(id, 1))
+  e2:SetDescription(aux.Stringid(id,1))
   e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_TODECK)
   e2:SetType(EFFECT_TYPE_QUICK_O)
   e2:SetRange(LOCATION_HAND)
@@ -26,20 +25,17 @@ function s.initial_effect(c)
   e2:SetOperation(s.atkop)
   c:RegisterEffect(e2)
 end
-
 s.listed_series = {0xdd}
 
 -- filter Blue-Eyes monster
 function s.thfilter(c)
   return c:IsType(TYPE_MONSTER) and c:IsSetCard(0xdd) and c:IsAbleToHand()
 end
-
 -- select Blue-Eyes monster from deck
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
   Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
-
 -- add Blue-Eyes monster from deck to hand
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
@@ -81,7 +77,6 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   Duel.SetOperationInfo(0,CATEGORY_ATKCHANGE,fieldtg,1,0,0)
   Duel.SetOperationInfo(0,CATEGORY_TODECK,gytg,1,0,0)
 end
-
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
   -- check if gy target is first, and if so, swap the targets so field target is first
   local fieldtc,gytc=Duel.GetFirstTarget()

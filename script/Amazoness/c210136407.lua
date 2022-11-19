@@ -19,21 +19,22 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x4}
+
 --Activate
-function s.condition(e, tp, eg, ep, ev, re, r, rp)
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and re:IsActiveType(TYPE_MONSTER) and Duel.IsChainNegatable(ev)
 end
 function s.filter(c)
     return c:IsFaceup() and c:IsSetCard(0x4) and c:IsType(TYPE_MONSTER)
 end
-function s.target(e, tp, eg, ep, ev, re, r, rp, chk, chkc)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter, tp, LOCATION_MZONE, 0, 1, nil) end
-    Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_FACEUP)
-    Duel.SelectTarget(tp, s.filter, tp, LOCATION_MZONE, 0, 1, 1, nil)
-	Duel.SetOperationInfo(0, CATEGORY_NEGATE, eg, 1, 0, 0)
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) end
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+    Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
 end
-function s.activate(e, tp, eg, ep, ev, re, r, rp)
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if Duel.NegateActivation(ev) and tc:IsRelateToEffect(e) then
@@ -41,23 +42,24 @@ function s.activate(e, tp, eg, ep, ev, re, r, rp)
 		local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_FIELD)
         e1:SetCode(EFFECT_MUST_ATTACK)
-        e1:SetTargetRange(0, LOCATION_MZONE)
+        e1:SetTargetRange(0,LOCATION_MZONE)
         e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
-        Duel.RegisterEffect(e1, tp)
+        Duel.RegisterEffect(e1,tp)
         local e2=e1:Clone()
         e2:SetCode(EFFECT_MUST_ATTACK_MONSTER)
         e2:SetValue(s.atklimit)
         e2:SetLabel(tc:GetRealFieldID())
-        Duel.RegisterEffect(e2, tp)
+        Duel.RegisterEffect(e2,tp)
     end
 end
-function s.atklimit(e, c)
+function s.atklimit(e,c)
     return c:GetRealFieldID()==e:GetLabel()
 end
+
 --Act in hand
 function s.actfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x4) and c:IsLevelAbove(6)
 end
 function s.actcon(e)
-	return Duel.IsExistingMatchingCard(s.actfilter, e:GetHandlerPlayer(), LOCATION_MZONE, 0, 1, nil)
+	return Duel.IsExistingMatchingCard(s.actfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end

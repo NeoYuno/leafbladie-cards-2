@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-    e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
+    e1:SetCountLimit(1,{id,EFFECT_COUNT_CODE_OATH})
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
     --Double damage
@@ -40,7 +40,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 		local tc=g:Select(tp,1,1,nil):GetFirst()
-		if aux.PlayFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp) then
+		if Duel.ActivateFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp) then
             local e1=Effect.CreateEffect(c)
             e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
             e1:SetCode(EVENT_SUMMON_SUCCESS)

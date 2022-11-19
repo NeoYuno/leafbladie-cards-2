@@ -34,6 +34,8 @@ function s.initial_effect(c)
 end
 s.listed_names={9012916}
 s.listed_series={0x33}
+
+--To hand
 function s.confilter(c)
     return c:IsFaceup() and (c:IsCode(9012916) or (c:IsSetCard(0x33) and c:IsType(TYPE_MONSTER)))
 end
@@ -68,6 +70,8 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+
+--Special Summon
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsReason(REASON_EFFECT) and rp~=tp and c:IsPreviousControler(tp)

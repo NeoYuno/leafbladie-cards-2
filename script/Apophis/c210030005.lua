@@ -22,6 +22,8 @@ function s.initial_effect(c)
 	e2:SetOperation(s.op)
 	c:RegisterEffect(e2)
 end
+
+--Activate
 function s.filter(c)
     return c:IsFaceup() and c:IsAttackPos() and c:IsType(TYPE_EFFECT) and c:IsCanChangePosition() and not c:IsType(TYPE_TRAPMONSTER)
 end
@@ -71,6 +73,8 @@ end
 function s.eftg(e,c)
 	return c:IsType(TYPE_TRAPMONSTER)
 end
+
+--Change ATK/DEF
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return (e:GetHandler():IsReason(REASON_EFFECT) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))
 	    or (e:GetHandler():IsReason(REASON_COST) and re:IsActivated() and re:IsActiveType(TYPE_SPELL+TYPE_TRAP))
