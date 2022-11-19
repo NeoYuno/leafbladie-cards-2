@@ -12,14 +12,14 @@ function s.initial_effect(c)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
     e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCountLimit(1, id+EFFECT_COUNT_CODE_OATH)
+	e1:SetCountLimit(1,{id,EFFECT_COUNT_CODE_OATH})
     e1:SetTarget(s.target)
     c:RegisterEffect(e1)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	local b1 = s.thtg(e,tp,eg,ep,ev,re,r,rp,0)
-	local b2 = s.cltg1(e,tp,eg,ep,ev,re,r,rp,0)
-	local b3 = s.cltg2(e,tp,eg,ep,ev,re,r,rp,0)
+	local b1=s.thtg(e,tp,eg,ep,ev,re,r,rp,0)
+	local b2=s.cltg1(e,tp,eg,ep,ev,re,r,rp,0)
+	local b3=s.cltg2(e,tp,eg,ep,ev,re,r,rp,0)
 	if chk==0 then return b1 or b2 or b3 end
 	local ops={}
 	local opval={}
@@ -59,30 +59,30 @@ end
 function s.thfilter(c)
 	return c:IsMask() and c:IsType(TYPE_SPELL+TYPE_TRAP) and not c:IsCode(id) and c:IsAbleToHand()
 end
-function s.thtg(e, tp, eg, ep, ev, re, r, rp, chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter, tp, LOCATION_DECK, 0, 1, nil) end
-	Duel.SetOperationInfo(0, CATEGORY_TOHAND, nil, 1, tp, LOCATION_DECK)
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
-function s.thop(e, tp, eg, ep, ev, re, r, rp)
-    Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp, s.thfilter, tp, LOCATION_DECK, 0, 1, 1, nil)
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if #g>0 then
-		Duel.SendtoHand(g, nil, REASON_EFFECT)
-		Duel.ConfirmCards(1-tp, g)
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end
 function s.clfilter1(c)
-    return c:GetEquipGroup():IsExists(Card.IsMask, 1, nil) and c:IsControlerCanBeChanged()
+    return c:GetEquipGroup():IsExists(Card.IsMask,1,nil) and c:IsControlerCanBeChanged()
 end
-function s.cltg1(e, tp, eg, ep, ev, re, r, rp, chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.clfilter1, tp, 0, LOCATION_MZONE, 1, nil) end
-    Duel.SetOperationInfo(0, CATEGORY_CONTROL, nil, 1, 0, 0)
+function s.cltg1(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return Duel.IsExistingMatchingCard(s.clfilter1,tp,0,LOCATION_MZONE,1,nil) end
+    Duel.SetOperationInfo(0,CATEGORY_CONTROL,nil,1,0,0)
 end
-function s.clop1(e, tp, eg, ep, ev, re, r, rp)
-    Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_CONTROL)
-	local g=Duel.SelectMatchingCard(tp, s.clfilter1, tp, 0, LOCATION_MZONE, 1, 1, nil)
+function s.clop1(e,tp,eg,ep,ev,re,r,rp)
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONTROL)
+	local g=Duel.SelectMatchingCard(tp,s.clfilter1,tp,0,LOCATION_MZONE,1,1,nil)
 	local tc=g:GetFirst()
-	if tc and not tc:IsImmuneToEffect(e) and Duel.GetControl(tc, tp) then
+	if tc and not tc:IsImmuneToEffect(e) and Duel.GetControl(tc,tp) then
 		local c=e:GetOwner()
 		local e1=Effect.CreateEffect(c)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -96,7 +96,7 @@ function s.clop1(e, tp, eg, ep, ev, re, r, rp)
 end
 function s.retcon1(e)
 	local c=e:GetHandler()
-	return not c:GetEquipGroup():IsExists(Card.IsMask, 1, nil)
+	return not c:GetEquipGroup():IsExists(Card.IsMask,1,nil)
 end
 function s.columnfilter(c)
     return c:IsMask() and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsFaceup()
@@ -104,15 +104,15 @@ end
 function s.clfilter2(c)
     return c:GetColumnGroup():IsExists(s.columnfilter,1,nil,tp) and c:IsControlerCanBeChanged()
 end
-function s.cltg2(e, tp, eg, ep, ev, re, r, rp, chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.clfilter2, tp, 0, LOCATION_MZONE, 1, nil) end
-    Duel.SetOperationInfo(0, CATEGORY_CONTROL, nil, 1, 0, 0)
+function s.cltg2(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return Duel.IsExistingMatchingCard(s.clfilter2,tp,0,LOCATION_MZONE,1,nil) end
+    Duel.SetOperationInfo(0,CATEGORY_CONTROL,nil,1,0,0)
 end
-function s.clop2(e, tp, eg, ep, ev, re, r, rp)
-    Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_CONTROL)
-	local g=Duel.SelectMatchingCard(tp, s.clfilter2, tp, 0, LOCATION_MZONE, 1, 1, nil)
+function s.clop2(e,tp,eg,ep,ev,re,r,rp)
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONTROL)
+	local g=Duel.SelectMatchingCard(tp,s.clfilter2,tp,0,LOCATION_MZONE,1,1,nil)
 	local tc=g:GetFirst()
-	if tc and not tc:IsImmuneToEffect(e) and Duel.GetControl(tc, tp) then
+	if tc and not tc:IsImmuneToEffect(e) and Duel.GetControl(tc,tp) then
 		local c=e:GetOwner()
 		local e1=Effect.CreateEffect(c)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -126,5 +126,5 @@ function s.clop2(e, tp, eg, ep, ev, re, r, rp)
 end
 function s.retcon2(e)
 	local c=e:GetHandler()
-	return not c:GetColumnGroup():IsExists(Card.IsMask, 1, nil)
+	return not c:GetColumnGroup():IsExists(Card.IsMask,1,nil)
 end

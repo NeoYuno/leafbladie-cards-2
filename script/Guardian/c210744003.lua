@@ -81,7 +81,7 @@ function s.thfilter(c)
 	return c:IsType(TYPE_SPELL) and c:IsType(TYPE_EQUIP) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local g=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroupCount(aux.FaceupFilter(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,nil)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and s.thfilter(chkc) end
 	if chk==0 then return g>0 and Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)

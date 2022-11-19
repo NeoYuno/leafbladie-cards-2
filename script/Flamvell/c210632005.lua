@@ -36,7 +36,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x2c}
 function s.adjustcon(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x2c),tp,LOCATION_MZONE,0,1,nil)
+    return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x2c),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.adjustop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Group.CreateGroup()
@@ -57,7 +57,7 @@ end
 function s.condition(e)
     local tp=e:GetHandlerPlayer()
     return Duel.GetMatchingGroupCount(nil,tp,0,LOCATION_GRAVE,nil)>2
-        and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x2c),tp,LOCATION_MZONE,0,1,nil)
+        and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x2c),tp,LOCATION_MZONE,0,1,nil)
 end
 
 function s.filter(c)

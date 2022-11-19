@@ -31,9 +31,9 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() and c:IsSetCard(0x52) end
-	if chk==0 then return e:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsExistingTarget(aux.FilterFaceupFunction(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return e:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsExistingTarget(aux.FaceupFilter(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	local g=Duel.SelectTarget(tp,aux.FilterFaceupFunction(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,aux.FaceupFilter(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CARDTYPE)
 	local opt1=Duel.SelectOption(tp,70,71,72)
 	local opt2=0

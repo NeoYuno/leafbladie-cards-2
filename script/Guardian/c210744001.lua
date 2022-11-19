@@ -39,7 +39,7 @@ s.listed_series={0x52}
 function s.spcon(e,c)
 	if c==nil then return true end
 	local mc=Duel.GetFieldGroupCount(c:GetControler(),LOCATION_MZONE,0)
-	return (mc==0 or Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsSetCard,0x52),c:GetControler(),LOCATION_MZONE,0,nil)==mc)
+	return (mc==0 or Duel.GetMatchingGroupCount(aux.FaceupFilter(Card.IsSetCard,0x52),c:GetControler(),LOCATION_MZONE,0,nil)==mc)
 		and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
 function s.repfilter(c,tp)

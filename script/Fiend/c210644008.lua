@@ -4,7 +4,7 @@ local s,id=GetID()
 function s.initial_effect(c)
     --fusion summon
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c, true, true, aux.FilterBoolFunctionEx(Card.IsAttribute, ATTRIBUTE_DARK), s.matfilter)
+	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsAttribute,ATTRIBUTE_DARK),s.matfilter)
     local e0=Effect.CreateEffect(c)
     e0:SetType(EFFECT_TYPE_SINGLE)
     e0:SetCode(EFFECT_ADD_SETCODE)
@@ -13,7 +13,7 @@ function s.initial_effect(c)
     c:RegisterEffect(e0)
     --ATK change
 	local e1=Effect.CreateEffect(c)
-    e1:SetDescription(aux.Stringid(id, 0))
+    e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_PAY_LPCOST)
 	e1:SetRange(LOCATION_MZONE)
@@ -21,7 +21,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
     --return and activate
     local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id, 1))
+	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetHintTiming(0,TIMING_STANDBY_PHASE+TIMINGS_CHECK_MONSTER)
@@ -32,7 +32,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2,false)
     --spsummon
 	local e3=Effect.CreateEffect(c)
-    e3:SetDescription(aux.Stringid(id, 2))
+    e3:SetDescription(aux.Stringid(id,2))
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
@@ -42,12 +42,13 @@ function s.initial_effect(c)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
 end
---fusion materials
-function s.matfilter(c, fc, sumtype, tp)
-	return c:IsRace(RACE_FIEND, fc, sumtype, tp) and c:GetLevel()==8
+
+--Fusion materials
+function s.matfilter(c,fc,sumtype,tp)
+	return c:IsRace(RACE_FIEND,fc,sumtype,tp) and c:GetLevel()==8
 end
 --ATK change
-function s.atkop(e, tp, eg, ep, ev, re, r, rp)
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(c)
@@ -58,8 +59,9 @@ function s.atkop(e, tp, eg, ep, ev, re, r, rp)
 		c:RegisterEffect(e1)
 	end
 end
---return and activate
-function s.filter(c, e, tp, eg, ep, ev, re, r, rp, chain)
+
+--Return and activate
+function s.filter(c,e,tp,eg,ep,ev,re,r,rp,chain)
 	if not c:IsType(TYPE_FIELD) and not (c:IsMask() and c:IsType(TYPE_SPELL+TYPE_TRAP)) and Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return false end
 	local te=c:GetActivateEffect()
 	local pre={Duel.GetPlayerEffect(tp,EFFECT_CANNOT_ACTIVATE)}
@@ -90,14 +92,14 @@ function s.filter(c, e, tp, eg, ep, ev, re, r, rp, chain)
 			and (not target or target(te,tp,teg,tep,tev,tre,tr,trp,0))
 	end
 end
-function s.actg(e, tp, eg, ep, ev, re, r, rp, chk)
+function s.actg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 end
-function s.acop(e, tp, eg, ep, ev, re, r, rp, chk)
-	local g1=Duel.GetMatchingGroup(Card.IsFaceup, tp, LOCATION_ONFIELD, 0, nil)
-	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_RTOHAND)
-	local sg1=g1:Select(tp, 1, 1, nil)
-	if sg1 and Duel.SendtoHand(sg1, tp, REASON_EFFECT)~=0 and Duel.SelectYesNo(tp, aux.Stringid(id, 3)) then
+function s.acop(e,tp,eg,ep,ev,re,r,rp,chk)
+	local g1=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
+	local sg1=g1:Select(tp,1,1,nil)
+	if sg1 and Duel.SendtoHand(sg1,tp, REASON_EFFECT)~=0 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
 		local chain=Duel.GetCurrentChain()-1
 		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp,chain)
 		if #g>0 then
@@ -186,34 +188,35 @@ function s.acop(e, tp, eg, ep, ev, re, r, rp, chk)
 		end
 	end
 end
---spsummon
-function s.spcon(e, tp, eg, ep, ev, re, r, rp)
+
+--Special Summon
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsPreviousPosition(POS_FACEUP) and c:GetLocation()~=LOCATION_DECK
 		and c:GetReasonPlayer()==1-tp and c:IsPreviousControler(tp)
 end
-function s.spfilter(c, e, tp)
-	return c:IsCode(48948935, 49064413) and c:IsCanBeSpecialSummoned(e, 0, tp, true, false)
+function s.spfilter(c,e,tp)
+	return c:IsCode(48948935,49064413) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
-function s.ctcheck(sg, e, tp)
+function s.ctcheck(sg,e,tp)
 	return sg:GetClassCount(Card.GetCode)==#sg
 end
-function s.sptg(e, tp, eg, ep, ev, re, r, rp, chk)
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
-		if Duel.IsPlayerAffectedByEffect(tp, CARD_BLUEEYES_SPIRIT) then return false end
-		if Duel.GetLocationCount(tp, LOCATION_MZONE)<2 then return false end
-		local g=Duel.GetMatchingGroup(s.spfilter, tp, LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE, 0, nil, e, tp)
+		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return false end
+		if Duel.GetLocationCount(tp,LOCATION_MZONE)<2 then return false end
+		local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp)
         return g:GetClassCount(Card.GetCode)>=2
 	end
 	e:GetHandler():CreateEffectRelation(e)
-	Duel.SetOperationInfo(0, CATEGORY_SPECIAL_SUMMON, nil, 2, tp, LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE)
 end
-function s.spop(e, tp, eg, ep, ev, re, r, rp)
-	if Duel.IsPlayerAffectedByEffect(tp, CARD_BLUEEYES_SPIRIT) then return end
-	if Duel.GetLocationCount(tp, LOCATION_MZONE)<2 then return end
-	local g=Duel.GetMatchingGroup(s.spfilter, tp, LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE, 0, nil, e, tp)
-	local sg=aux.SelectUnselectGroup(g, e, tp, 1, 2, s.ctcheck, 1, tp, HINTMSG_SPSUMMON)
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<2 then return end
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp)
+	local sg=aux.SelectUnselectGroup(g,e,tp,1,2,s.ctcheck,1,tp,HINTMSG_SPSUMMON)
 	if sg then
-		Duel.SpecialSummon(sg, 0, tp, tp, true, false, POS_FACEUP)
+		Duel.SpecialSummon(sg,0,tp,tp,true,false,POS_FACEUP)
     end
 end

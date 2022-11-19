@@ -28,7 +28,7 @@ end
 s.listed_series={0x52}
 s.listed_names={id}
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
-	if ep==tp or not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,1,nil) then
+	if ep==tp or not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x52),tp,LOCATION_MZONE,0,1,nil) then
 		return false
 	end
 	return Duel.IsChainNegatable(ev) and (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE))

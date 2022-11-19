@@ -43,7 +43,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local fg=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
 	local gyg=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
 	return eg:GetFirst()==e:GetHandler():GetEquipTarget() and eg:GetFirst():IsStatus(STATUS_OPPO_BATTLE)
-		and not fg:IsExists(aux.FilterFaceupFunction(Card.IsCode,34022290),1,nil)
+		and not fg:IsExists(aux.FaceupFilter(Card.IsCode,34022290),1,nil)
 		and not gyg:IsExists(Card.IsType,1,nil,TYPE_MONSTER)
 end
 function s.spfilter(c,e,tp)
@@ -71,9 +71,9 @@ function s.rmfilter(c)
 	return c:IsAbleToRemove() and aux.SpElimFilter(c,true,true)
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingTarget(aux.FilterFaceupFunction(Card.IsCode,34022290),tp,LOCATION_MZONE,0,1,nil)
+	if chk==0 then return Duel.IsExistingTarget(aux.FaceupFilter(Card.IsCode,34022290),tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(s.rmfilter,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,nil) end
-	Duel.SelectTarget(tp,aux.FilterFaceupFunction(Card.IsCode,34022290),tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.SelectTarget(tp,aux.FaceupFilter(Card.IsCode,34022290),tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,0,LOCATION_ONFIELD+LOCATION_GRAVE)
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)

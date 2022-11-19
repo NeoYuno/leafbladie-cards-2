@@ -60,10 +60,10 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.limcond(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x52),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil) 
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x52),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil) 
 end
 function s.tglimit(e,c)
-	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x52),e:GetHandlerPlayer(),0xff,0,nil)
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x52),e:GetHandlerPlayer(),0xff,0,nil)
 	return c:IsFaceup() and c:IsSetCard(0x52) and not g:GetMaxGroup(Card.GetAttack):IsContains(c)
 end
 function s.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
