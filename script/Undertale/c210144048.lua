@@ -41,7 +41,7 @@ s.counter_place_list={COUNTER_LV}
 s.listed_names={210144001,210144048}
 s.listed_series={0x0f4a}
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x0f4a) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -74,7 +74,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.thfilter(c)
-	return aux.IsCodeListed(c,210144001) and c:IsAbleToHand()
+	return c:ListsCode(210144001) and c:IsAbleToHand()
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

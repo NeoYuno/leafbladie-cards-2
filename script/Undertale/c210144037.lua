@@ -47,7 +47,7 @@ s.listed_names={210144001}
 s.listed_series={0x0f4a}
 function s.limcon(e)
 	return Duel.GetCurrentPhase()==PHASE_MAIN1 and Duel.GetTurnPlayer()~=e:GetHandlerPlayer()
-        and e:GetHandler():GetLinkedGroup():IsExists(aux.FilterFaceupFunction(Card.IsCode,210144001),1,nil)
+        and e:GetHandler():GetLinkedGroup():IsExists(aux.FaceupFilter(Card.IsCode,210144001),1,nil)
 end
 function s.limval(e,re,tp)
 	return re:IsActiveType(TYPE_MONSTER)
@@ -70,5 +70,5 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil)
 end

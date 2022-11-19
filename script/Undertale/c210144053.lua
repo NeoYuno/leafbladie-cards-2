@@ -41,7 +41,7 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.thfilter(c,tp)
 	return c:IsSetCard(0x0f4d) and c:IsMonster() and c:IsAbleToHand()
-	    and not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,c:GetCode()),tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,1,nil)
+	    and not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,c:GetCode()),tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,1,nil)
 end
 function s.tdfilter(c)
 	return c:IsSetCard(0x0f4a) and c:IsMonster() and c:IsAbleToDeck()

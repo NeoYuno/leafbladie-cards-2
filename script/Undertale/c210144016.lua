@@ -64,12 +64,12 @@ function s.spfilter(c,e,tp)
 	return c:IsSetCard(0xf4b) and c:IsAttackAbove(2800) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 function s.selchk(tp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local loc=LOCATION_HAND
-	if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil) then loc=loc+LOCATION_DECK end
+	if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil) then loc=loc+LOCATION_DECK end
 	if not c:IsFaceup() or not c:IsRelateToEffect(e) then return end
 	if Duel.SendtoHand(c,nil,REASON_EFFECT)>0 and Duel.IsExistingMatchingCard(s.spfilter,tp,loc,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)

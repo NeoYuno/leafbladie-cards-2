@@ -42,5 +42,5 @@ function s.costop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.tgcon(e)
   local c=e:GetHandler()
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0xf4a),c:GetControler(),LOCATION_MZONE,0,1,c)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0xf4a),c:GetControler(),LOCATION_MZONE,0,1,c)
 end

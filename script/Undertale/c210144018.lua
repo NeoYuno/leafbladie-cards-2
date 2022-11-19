@@ -63,7 +63,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
-    if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil) then
+    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil) then
         Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetLabelObject(),1,tp,LOCATION_HAND)
     else
         Duel.SetOperationInfo(0,CATEGORY_TODECK,e:GetLabelObject(),1,tp,LOCATION_DECK)
@@ -74,7 +74,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
     local at=e:GetLabelObject()
 	if not c:IsRelateToEffect(e) then return end
 	if Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP_DEFENSE)>0 then
-        if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil) then
+        if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),tp,LOCATION_MZONE,0,1,nil) then
             Duel.SendtoHand(at,nil,REASON_EFFECT)
         else
             Duel.SendtoDeck(at,nil,2,REASON_EFFECT)

@@ -27,7 +27,7 @@ end
 s.listed_names={210144005}
 s.listed_series={0x0f4a}
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144005),tp,LOCATION_MZONE,0,1,nil)
+    return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144005),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x0f4a) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)

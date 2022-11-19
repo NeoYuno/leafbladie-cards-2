@@ -46,12 +46,12 @@ s.listed_names={210144001,210144077}
 s.listed_series={0x0f4a}
 function s.spcon(e)
 	if c==nil then return true end
-    local cost=Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+    local cost=Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 	return Duel.GetLocationCount(e:GetHandlerPlayer(),LOCATION_MZONE)>0 
 	    and (Duel.CheckLPCost(e:GetHandlerPlayer(),math.floor(Duel.GetLP(tp)/2) or (cost and Duel.CheckLPCost(e:GetHandlerPlayer(),1000))))
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
-    local cost=Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144001),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+    local cost=Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144001),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
     if cost and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         Duel.PayLPCost(tp,1000)
     else

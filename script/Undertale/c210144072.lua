@@ -32,7 +32,7 @@ function s.thfilter(c)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
     return eg and eg:IsExists(s.confilter,1,nil,tp)
-        and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144021),tp,LOCATION_MZONE,0,1,nil)
+        and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144021),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil) end
@@ -50,7 +50,7 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     if c:IsRelateToEffect(e) and Duel.SendtoHand(c,nil,REASON_EFFECT)>0
-    and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144074),tp,LOCATION_MZONE,0,1,nil)
+    and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144074),tp,LOCATION_MZONE,0,1,nil)
     and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil)
     and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)

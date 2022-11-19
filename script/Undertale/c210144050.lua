@@ -53,7 +53,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
         local e2=Effect.CreateEffect(e:GetHandler())
         e2:SetType(EFFECT_TYPE_SINGLE)
         e2:SetCode(EFFECT_UPDATE_ATTACK)
-        if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144027),tp,LOCATION_MZONE,0,1,nil) then
+        if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144027),tp,LOCATION_MZONE,0,1,nil) then
             e2:SetValue(atk*-400)
         else
             e2:SetValue(atk*-200)
@@ -64,7 +64,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.lpcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,210144027),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,210144027),tp,LOCATION_MZONE,0,1,nil)
         and Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)==0
 end
 function s.lpop(e,tp,eg,ep,ev,re,r,rp)
