@@ -52,7 +52,19 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg=g:Select(tp,1,1,nil)
-		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
+		if Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)>0 then
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_FIELD)
+			e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+			e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+			e1:SetRange(LOCATION_MZONE)
+			e1:SetTargetRange(1,0)
+			e1:SetCondition(function(e) return e:GetHandler():GetControler()==e:GetLabel() end)
+			e1:SetTarget(function(_,c) return not (c:IsSetCard(0x2)) end)
+			e1:SetLabel(tp)
+			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+			sg:GetFirst():RegisterEffect(e1,true)
+		end
 	end
 end
 
