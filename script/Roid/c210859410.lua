@@ -58,14 +58,13 @@ function s.drtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.drop2(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-    local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
-	if not Duel.Draw(p,d,REASON_EFFECT) then return end
-    if #g<=0 then return end
-    if e:GetHandler():IsReason(REASON_BATTLE) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
-        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-        local sg=g:Select(tp,1,1,nil,e,tp)
-        if #sg<=0 then return end
-        Duel.BreakEffect()
-        Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
-    end
+	if Duel.Draw(p,d,REASON_EFFECT)==0 then return end
+    if e:GetHandler():IsReason(REASON_BATTLE) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
+	and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+		if #g>0 then
+			Duel.BreakEffect()
+			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		end
+	end
 end
