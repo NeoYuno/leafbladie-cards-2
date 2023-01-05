@@ -26,7 +26,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x1034}
-s.listed_names={95600067}
 function s.cfilter(c)
 	return c:IsSetCard(0x1034) and c:IsType(TYPE_MONSTER) and c:IsAbleToGraveAsCost()
 end
@@ -47,7 +46,7 @@ end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-        if e:GetLabelObject():GetCode()==95600067 then
+        if e:GetLabelObject():IsCode(95600067,72843899) then
             --Its ATK becomes 0
             local e1=Effect.CreateEffect(e:GetHandler())
             e1:SetType(EFFECT_TYPE_SINGLE)

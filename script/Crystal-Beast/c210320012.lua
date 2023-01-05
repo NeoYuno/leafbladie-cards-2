@@ -20,9 +20,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x1034,0x2034}
-s.listed_names={68215963}
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(tp,id)==0
+end
+function s.emeraldfilter(c)
+	return c:IsFaceup() and c:IsCode(68215963,46358784)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
@@ -35,7 +37,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	e1:SetValue(s.efilter)
 	Duel.RegisterEffect(e1,tp,true)
-    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,68215963),tp,LOCATION_MZONE,0,1,nil) then
+    if Duel.IsExistingMatchingCard(s.emeraldfilter,tp,LOCATION_MZONE,0,1,nil) then
         local e2=Effect.CreateEffect(e:GetHandler())
         e2:SetType(EFFECT_TYPE_FIELD)
         e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)

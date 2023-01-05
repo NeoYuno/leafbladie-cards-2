@@ -27,7 +27,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_series={0x34,0x1034}
-s.listed_names={32933942}
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.GetAttacker()
 	if tc:IsControler(1-tp) then tc=Duel.GetAttackTarget() end
@@ -69,6 +68,9 @@ end
 function s.thfilter(c)
 	return c:IsSetCard(0x34) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
+function s.amethystfilter(c)
+	return c:IsFaceup() and c:IsCode(32933942,19963185)
+end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
@@ -79,7 +81,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if #g==0 then return end
 	Duel.SendtoHand(g,nil,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,g)
-    if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,32933942),tp,LOCATION_MZONE,0,1,nil)
+    if Duel.IsExistingMatchingCard(s.amethystfilter,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil)
 		and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)

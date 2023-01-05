@@ -28,12 +28,14 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_series={0x1034}
-s.listed_names={32710364}
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(Card.IsSetCard,1,nil,0x1034)
 end
 function s.cbfilter(c)
     return c:IsFaceup() and c:IsSetCard(0x1034)
+end
+function s.rubyfilter(c)
+	return c:IsFaceup() and c:IsCode(32710364,83575471)
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -47,7 +49,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	if ct1>ct2 then ct1=ct2 end
 	if ct1>ct3 then ct1=ct3 end
 	if ct1==0 then return end
-	if ct3>=ct1 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,32710364),tp,LOCATION_MZONE,0,1,nil)
+	if ct3>=ct1 and Duel.IsExistingMatchingCard(s.rubyfilter),tp,LOCATION_MZONE,0,1,nil)
 	    and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		local t={}
 		for i=1,ct1 do t[i]=i end
@@ -66,7 +68,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.filter(c,e,tp)
-	return (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE)) and c:IsCode(32710364) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
+	return (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE)) and c:IsCode(32710364,83575471) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and s.filter(chkc,e,tp) end

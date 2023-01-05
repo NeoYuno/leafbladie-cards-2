@@ -15,7 +15,6 @@ function s.initial_effect(c)
     c:RegisterEffect(e2)
 end
 s.listed_series={0x1034}
-s.listed_names={21698716}
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     local tc=Duel.GetDecktopGroup(tp,1):GetFirst()
 	if chk==0 then return Duel.IsPlayerCanDiscardDeck(tp,1) and tc:IsAbleToHand() end

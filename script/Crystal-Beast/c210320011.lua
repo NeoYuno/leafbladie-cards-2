@@ -21,7 +21,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x1034}
-s.listed_names={69937550}
 function s.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x1034)
 end
@@ -59,20 +58,40 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e1)
 	end
 end
+function s.amberfilter(c)
+	return c:IsFaceup() and c:IsCode(69937550,18847598)
+end
 function s.ftarget(e,c)
 	return e:GetLabel()~=c:GetFieldID()
 end
 function s.macon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,69937550),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.amberfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.maop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     --Must attack
-    local e2=Effect.CreateEffect(c)
-    e2:SetType(EFFECT_TYPE_FIELD)
-    e2:SetCode(EFFECT_MUST_ATTACK)
-    e2:SetRange(0x3ff)
-    e2:SetTargetRange(0,LOCATION_MZONE)
-    e2:SetReset(RESET_PHASE+PHASE_END)
-    c:RegisterEffect(e2)
+    local e1=Effect.CreateEffect(c)
+    e1:SetType(EFFECT_TYPE_FIELD)
+    e1:SetCode(EFFECT_MUST_ATTACK)
+    e1:SetRange(0x3ff)
+    e1:SetTargetRange(0,LOCATION_MZONE)
+    e1:SetReset(RESET_PHASE+PHASE_END)
+    c:RegisterEffect(e1)
+	--Limit attack target
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetCode(EFFECT_CANNOT_SELECT_BATTLE_TARGET)
+	e2:SetRange(0x3ff)
+	e2:SetTargetRange(0,LOCATION_MZONE)
+	e2:SetValue(s.atlimit)
+	e2:SetReset(RESET_PHASE+PHASE_END)
+	c:RegisterEffect(e2)
+end
+function s.atkval(tp)
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,0,nil)
+	local _,val=g:GetMaxGroup(Card.GetAttack)
+	return val
+end
+function s.atlimit(e,c)
+	return c:IsFaceup() and c:GetAttack()<s.atkval(e:GetHandlerPlayer())
 end

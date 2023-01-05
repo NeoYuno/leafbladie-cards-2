@@ -1,31 +1,56 @@
---Crystal Beast Ruby Carbuncle
+--Advanced Crystal Beast Cobalt Eagle
+--Modified for Crystal Cobalt Wing
 local s,id=GetID()
 function s.initial_effect(c)
-	--send replace
+	Duel.EnableGlobalFlag(GLOBALFLAG_SELF_TOGRAVE)
+	--Send itself to the GY if "Adanced Dark" is not face-up in the Field Spell Zone
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_TO_GRAVE_REDIRECT_CB)
-	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCondition(s.repcon)
-	e1:SetOperation(s.repop)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCode(EFFECT_SELF_TOGRAVE)
+	e1:SetCondition(s.tgcon)
 	c:RegisterEffect(e1)
-	--special summon
+	--Place itself in the S/T instead of sending it to the GY
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.operation)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_TO_GRAVE_REDIRECT_CB)
+	e2:SetProperty(EFFECT_FLAG_UNCOPYABLE)
+	e2:SetCondition(s.replacecon)
+	e2:SetOperation(s.replaceop)
 	c:RegisterEffect(e2)
+	--Add 1 "Advanced Dark" to the hand
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(45236142,0))
+	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e3:SetType(EFFECT_TYPE_IGNITION)
+	e3:SetRange(LOCATION_HAND+LOCATION_MZONE)
+	e3:SetCost(s.searchcost)
+	e3:SetTarget(s.searchtg)
+	e3:SetOperation(s.searchop)
+	c:RegisterEffect(e3)
+	--Target 1 "Advanced Crystal Beast" card and add it to hand or to the deck
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(45236142,1))
+	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_TODECK)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCountLimit(1)
+	e4:SetTarget(s.thdtg)
+	e4:SetOperation(s.thdop)
+	c:RegisterEffect(e4)
 end
-s.listed_series={0x1034}
-function s.repcon(e)
+s.listed_names={CARD_ADVANCED_DARK}
+s.listed_series={0x5034}
+function s.tgcon(e)
+	return not Duel.IsEnvironment(CARD_ADVANCED_DARK)
+end
+function s.replacecon(e)
 	local c=e:GetHandler()
 	return c:IsFaceup() and c:IsLocation(LOCATION_MZONE) and c:IsReason(REASON_DESTROY)
 end
-function s.repop(e,tp,eg,ep,ev,re,r,rp)
+function s.replaceop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local e1=Effect.CreateEffect(c)
 	e1:SetCode(EFFECT_CHANGE_TYPE)
@@ -36,33 +61,49 @@ function s.repop(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e1)
 	Duel.RaiseEvent(c,EVENT_CUSTOM+47408488,e,0,tp,0,0)
 end
-function s.filter(c,e,sp)
-	return c:IsFaceup() and c:IsSetCard(0x1034) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)
+function s.searchcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:IsAbleToGraveAsCost() end
+	Duel.SendtoGrave(c,REASON_COST)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_SZONE,0,1,nil,e,tp)
-		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
-	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ct=1 end
-	local gct=Duel.GetMatchingGroupCount(s.filter,tp,LOCATION_SZONE,0,nil,e,tp)
-	if ct>gct then
-		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,gct,tp,LOCATION_SZONE)
-	else
-		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,ct,tp,LOCATION_SZONE)
+function s.sfilter(c)
+	return c:IsCode(CARD_ADVANCED_DARK) and c:IsAbleToHand()
+end
+function s.searchtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.sfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
+end
+function s.searchop(e,tp,eg,ep,ev,re,r,rp,chk)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.sfilter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	if ct<=0 then return end
-	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ct=1 end
-	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_SZONE,0,nil,e,tp)
-	local gc=#g
-	if gc==0 then return end
-	if gc<=ct then
-		Duel.SpecialSummon(g,0,tp,tp,true,false,POS_FACEUP)
-	else
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local sg=g:Select(tp,ct,ct,nil)
-		Duel.SpecialSummon(sg,0,tp,tp,true,false,POS_FACEUP)
+function s.cfilter(c)
+	return c:IsFaceup() and c:IsSetCard(0x5034) and (c:IsAbleToHand() or c:IsAbleToDeck())
+end
+function s.filter(c)
+    return c:IsFaceup() and c:IsCode(210320009) and not c:IsDisabled()
+end
+function s.thdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+    local loc=LOCATION_ONFIELD
+    if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_SZONE,0,1,nil) then loc=loc+LOCATION_GRAVE+LOCATION_REMOVED end
+	if chkc then return chkc:IsOnField() and chkc:IsControler(tp) and s.cfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.cfilter,tp,loc,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+	local g=Duel.SelectTarget(tp,s.cfilter,tp,loc,0,1,1,nil)
+	Duel.SetPossibleOperationInfo(0,CATEGORY_TOHAND,g,1,tp,loc)
+	Duel.SetPossibleOperationInfo(0,CATEGORY_TODECK,g,1,tp,loc)
+end
+function s.thdop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc:IsRelateToEffect(e) then
+		aux.ToHandOrElse(tc,tp,
+			function(c) return c:IsAbleToDeck() end,
+			function(tc) Duel.SendtoDeck(tc,nil,SEQ_DECKTOP,REASON_EFFECT) end,
+			aux.Stringid(45236142,2)
+		)
 	end
 end
