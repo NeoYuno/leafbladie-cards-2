@@ -73,50 +73,58 @@ function s.coinop(e,tp,eg,ep,ev,re,r,rp)
 	s.arcanareg(c,Arcana.TossCoin(c,tp))
 end
 function s.arcanareg(c,coin)
-	--coin effect
+	--Heads
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e1:SetCondition(s.con1)
 	e1:SetTarget(s.destg2)
 	e1:SetOperation(s.desop2)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e1)
 	Arcana.RegisterCoinResult(c,coin)
+	--Tails
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e2:SetCategory(CATEGORY_DESTROY)
+	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e2:SetCondition(s.con2)
+	e2:SetTarget(s.destg3)
+	e2:SetOperation(s.desop3)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+	c:RegisterEffect(e2)
+	Arcana.RegisterCoinResult(c,coin)
+end
+function s.con1(e,tp,eg,ep,ev,re,r,rp)
+	return ep==tp and Arcana.GetCoinResult(e:GetHandler())==COIN_HEADS
 end
 function s.destg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local coin=Arcana.GetCoinResult(e:GetHandler())
-	if chk==0 then return coin==COIN_HEADS or coin==COIN_TAILS end
-	local heads=coin==COIN_HEADS
-	if heads then
-		e:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
-		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	else
-		e:SetCategory(CATEGORY_DESTROY)
-		e:SetProperty(0)
-	end
-	if chkc then return heads and chkc:IsLocation(LOCATION_MZONE) end
-	if heads then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-		local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
-		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
-		Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,1000)
-	else
-		local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-		Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
-	end
-	Duel.SetTargetParam(coin)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_MZONE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,1000)
 end
 function s.desop2(e,tp,eg,ep,ev,re,r,rp)
-	local coin=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
-	if coin==COIN_HEADS then
-		local tc=Duel.GetFirstTarget()
-		if tc then
-			if tc and tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)~=0 then
-				Duel.Damage(1-tp,1000,REASON_EFFECT)
-			end
+	local tc=Duel.GetFirstTarget()
+	if tc then
+		if tc and tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)~=0 then
+			Duel.Damage(1-tp,1000,REASON_EFFECT)
 		end
-	elseif coin==COIN_TAILS then
-		local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-		Duel.Destroy(sg,REASON_EFFECT)
 	end
+end
+function s.con2(e,tp,eg,ep,ev,re,r,rp)
+	return ep==tp and Arcana.GetCoinResult(e:GetHandler())==COIN_TAILS
+end
+function s.destg3(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
+end
+function s.desop3(e,tp,eg,ep,ev,re,r,rp)
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	Duel.Destroy(sg,REASON_EFFECT)
 end
