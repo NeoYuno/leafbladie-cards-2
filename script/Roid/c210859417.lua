@@ -7,7 +7,7 @@ function s.initial_effect(c)
     Fusion.AddContactProc(c,s.contactfil,s.contactop,true)
     --Destroy
     local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
+	e1:SetCategory(CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -44,14 +44,15 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,nil,tp,0,LOCATION_MZONE,1,1,nil)
 	if #g>0 then
 		Duel.HintSelection(g,true)
-		local tc=g:GetFirst()
-		local atk=tc:GetAttack()
-		local c=e:GetHandler()
-		if Duel.Destroy(tc,REASON_EFFECT)>0 and Duel.GetTurnPlayer()==1-tp then
-			Duel.BreakEffect()
-			Duel.Damage(1-tp,atk,REASON_EFFECT)
-		end
+		Duel.Destroy(g,REASON_EFFECT)
 	end
+	local hg=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
+	if #hg==0 or Duel.GetTurnPlayer()==tp or not Duel.SelectYesNo(tp,aux.Stringid(id,0)) then return end
+	Duel.ConfirmCards(tp,hg)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
+	local sg=hg:Select(tp,1,1,nil)
+	Duel.SendtoGrave(sg,REASON_EFFECT+REASON_DISCARD)
+	Duel.ShuffleHand(1-tp)
 end
 --[Special Summon]
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)

@@ -40,13 +40,12 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFacedown,tp,0,LOCATION_ONFIELD,nil)
-	if Duel.Destroy(g,REASON_EFFECT)>0 and Duel.GetTurnPlayer()==1-tp then
-        local g2=Duel.GetFieldGroup(tp,0,LOCATION_GRAVE)
-        if #g2>0 then
-            Duel.BreakEffect()
-            Duel.Remove(g2,POS_FACEUP,REASON_EFFECT)
-        end
-    end
+	if #g>0 then 
+		Duel.Destroy(g,REASON_EFFECT)
+	end
+	local g2=Duel.GetFieldGroup(tp,0,LOCATION_GRAVE)
+	if #g2==0 or Duel.GetTurnPlayer()==tp or not Duel.SelectYesNo(tp,aux.Stringid(id,0)) then return end
+    Duel.Remove(g2,POS_FACEUP,REASON_EFFECT)
 end
 --[To hand]
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
