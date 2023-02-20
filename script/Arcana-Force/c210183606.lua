@@ -32,11 +32,28 @@ function s.initial_effect(c)
 end
 s.toss_coin=true
 s.listed_series={SET_ARCANA_FORCE}
-function s.contactfil(tp)
-	return Duel.GetMatchingGroup(Card.IsAbleToGraveAsCost,tp,LOCATION_MZONE,0,nil)
+function s.filter(c)
+	return (c:IsLocation(LOCATION_MZONE) and c:IsAbleToGraveAsCost()) or (c:IsLocation(LOCATION_GRAVE) and c:IsAbleToRemoveAsCost())
 end
-function s.contactop(g)
-	Duel.SendtoGrave(g,REASON_COST+REASON_MATERIAL)
+function s.contactfil(tp)
+	if Duel.IsPlayerAffectedByEffect(tp,210183612) then
+		return Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
+	else
+		return Duel.GetMatchingGroup(Card.IsAbleToGraveAsCost,tp,LOCATION_MZONE,0,nil)
+	end
+end
+function s.contactop(g,tp)
+	if Duel.IsPlayerAffectedByEffect(tp,210183612) then
+		for tc in aux.Next(g) do
+			if tc:IsLocation(LOCATION_MZONE) then
+				Duel.SendtoGrave(tc,REASON_COST+REASON_MATERIAL)
+			else
+				Duel.Remove(tc,POS_FACEUP,REASON_COST+REASON_MATERIAL)
+			end
+		end
+	else
+		Duel.SendtoGrave(g,REASON_COST+REASON_MATERIAL)
+	end
 end
 --[Coin Effect]
 function s.cointg(e,tp,eg,ep,ev,re,r,rp,chk)
