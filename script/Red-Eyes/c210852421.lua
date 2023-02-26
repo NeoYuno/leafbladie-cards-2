@@ -82,8 +82,6 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			tc:RegisterEffect(e1)
-        else
-            Duel.SendtoGrave(tc,REASON_EFFECT+REASON_REVEAL)
         end
     end
 end
