@@ -1,4 +1,4 @@
---Ojamachine King
+--Mecha Ojama King
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_REMOVE)
-	e2:SetCountLimit(1,{id,1})
+	e2:SetCountLimit(1,id)
 	e2:SetTarget(s.sptg2)
 	e2:SetOperation(s.spop2)
 	c:RegisterEffect(e2)
