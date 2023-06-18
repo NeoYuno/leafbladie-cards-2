@@ -6,13 +6,13 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetProperty(EFFECT_FLAG_DELAY)
-    e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-    e1:SetCountLimit(1,id)
-    e1:SetCondition(s.spcon)
+        e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+        e1:SetCountLimit(1,id)
+        e1:SetCondition(s.spcon)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
-    --Special Summon
+        --Special Summon
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
@@ -43,10 +43,10 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local ft=5
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
 	ft=math.min(ft,Duel.GetLocationCount(tp,LOCATION_MZONE))
-	if ft<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,210418207,0xf,TYPES_TOKEN,0,1000,2,RACE_MACHINE,ATTRIBUTE_LIGHT) then return end
+	if ft<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,210503007,0xf,TYPES_TOKEN,0,1000,2,RACE_MACHINE,ATTRIBUTE_LIGHT) then return end
 	local i=0
 	repeat
-		local token=Duel.CreateToken(tp,210418207)
+		local token=Duel.CreateToken(tp,210503007)
         if Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP) then
 			--Take no battle damage
             local e1=Effect.CreateEffect(c)
