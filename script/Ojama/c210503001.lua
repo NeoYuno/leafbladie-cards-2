@@ -46,7 +46,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if ft<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,210503007,0xf,TYPES_TOKEN,0,1000,2,RACE_MACHINE,ATTRIBUTE_LIGHT) then return end
 	local i=0
 	repeat
-		local token=Duel.CreateToken(tp,210503007)
+		local token=Duel.CreateToken(tp,210503006+1+i)
         if Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP) then
 			--Take no battle damage
             local e1=Effect.CreateEffect(c)
