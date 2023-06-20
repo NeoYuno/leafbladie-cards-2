@@ -1,3 +1,4 @@
+--Madolche Necklafoutis
 --Madolche Chowlotte
 local s,id=GetID()
 function s.initial_effect(c)
@@ -58,16 +59,13 @@ end
 function s.cfilter(c)
 	return c:IsSetCard(0x71) and not c:IsPublic()
 end
-function s.desfilter(c,type)
-    return c:IsFaceup() and c:IsType(type)
-end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,e:GetHandler()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,e:GetHandler())
-    e:SetLabel(g:GetFirst():GetType())
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,3,e:GetHandler())
 	Duel.ConfirmCards(1-tp,g)
 	Duel.ShuffleHand(tp)
+    e:SetLabel(#g)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -76,12 +74,12 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) and Duel.SpecialSummon(e:GetHandler(),0,tp,tp,false,false,POS_FACEUP)>0
-          and Duel.IsExistingMatchingCard(s.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil,e:GetLabel()) 
+          and Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil) 
           and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
-        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-        local tg=Duel.SelectMatchingCard(tp,s.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil,e:GetLabel())
+        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
+        local tg=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetLabel(),nil)
         Duel.HintSelection(tg:GetFirst())
-        Duel.Destroy(tg,REASON_EFFECT)
+        Duel.SendtoDeck(tg,nil,2,REASON_EFFECT)
 	end
 end
 
@@ -89,7 +87,7 @@ function s.fieldfilter(c,tp)
 	return c:IsCode(14001430) and c:GetActivateEffect() and c:GetActivateEffect():IsActivatable(tp,true,true)
 end
 function s.thfilter(c)
-    return c:IsSetCard(0x71) and c:IsRace(RACE_SPELLCASTER+RACE_FAIRY) and c:IsAbleToHand()
+    return c:IsSetCard(0x71) and c:IsRace(RACE_SPELLCASTER+RACE_BEAST) and c:IsAbleToHand()
 end
 function s.accon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.fieldfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,nil,tp)
