@@ -77,7 +77,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
           and Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil) 
           and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-        local tg=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetLabel(),nil)
+        local tg=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,e:GetLabel(),nil)
         Duel.HintSelection(tg:GetFirst())
         Duel.SendtoDeck(tg,nil,2,REASON_EFFECT)
 	end
