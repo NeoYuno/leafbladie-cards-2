@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,210418201,210418202,210418203)
+	Fusion.AddProcMix(c,true,true,210503001,210503002,210503003)
     Fusion.AddContactProc(c,s.contactfil,s.contactop,true)
     --lizard check
 	Auxiliary.addLizardCheck(c)
