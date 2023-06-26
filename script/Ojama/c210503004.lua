@@ -56,7 +56,7 @@ function s.spcon(e)
 	return e:GetHandler():GetSummonLocation()&LOCATION_EXTRA==LOCATION_EXTRA
 end
 function s.spfilter(c,e,tp)
-	return c:IsCode(210418201,210418202,210418203) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_SPECIAL+1,tp,false,false)
+	return c:IsCode(210503001,210503002,210503003) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_SPECIAL+1,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
