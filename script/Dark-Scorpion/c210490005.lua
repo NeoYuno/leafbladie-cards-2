@@ -59,7 +59,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
     return not ec:IsCode(48768179)
 end
 function s.cfilter(c,tp)
-	return c:IsSetCard(0x1a) and c:IsControler(tp)
+	return c:IsSetCard(0x1a) and c:IsCode(76922029) and c:IsControler(tp)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)

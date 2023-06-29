@@ -7,7 +7,6 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
     e1:SetCountLimit(1,id)
-    e1:SetCondition(s.descon)
 	e1:SetCost(s.descost)
 	e1:SetTarget(s.destg)
 	e1:SetOperation(s.desop)
@@ -27,12 +26,6 @@ function s.initial_effect(c)
 end
 s.listed_names={76922029,74153887}
 s.listed_series={0x1a}
-function s.filter(c)
-    return c:IsFaceup() and c:IsCode(76922029)
-end
-function s.descon(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil)
-end
 function s.cfilter(c)
 	return c:IsSetCard(0x1a) and c:IsAbleToGraveAsCost()
 end
@@ -72,8 +65,8 @@ end
 function s.vfilter(c)
 	return c:IsSetCard(0x1a) and (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
 end
-function s.atkfilter(c,code)
-    return c:IsCode(code)
+function s.atkfilter(c)
+    return c:IsMonster() and c:IsSetCard(0x1a)
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.vfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil) end
@@ -93,20 +86,11 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.atkval(e,c)
-	local mzg=Duel.GetMatchingGroup(Card.IsSetCard,c:GetControler(),LOCATION_MZONE,0,nil,0x1a)
-	local gyg=Duel.GetMatchingGroup(Card.IsSetCard,c:GetControler(),LOCATION_GRAVE,0,nil,0x1a)
-	for tc in aux.Next(mzg,gyg) do
-		if mzg:IsExists(Card.IsCode,2,nil,tc:GetCode()) then
-			mzg:RemoveCard(tc)
-			return mzg:GetSum(Card.GetBaseAttack)
-		else
-			return mzg:GetSum(Card.GetBaseAttack)
+	local g=Duel.GetMatchingGroup(s.atkfilter,e:GetHandlerPlayer(),LOCATION_MZONE+LOCATION_GRAVE,0,nil)
+	for tc in aux.Next(g) do
+		if g:IsExists(Card.IsCode,2,nil,tc:GetCode()) then
+			g:RemoveCard(tc)
 		end
-		if gyg:IsExists(Card.IsCode,2,nil,tc:GetCode()) then
-			gyg:RemoveCard(tc)
-			return gyg:GetSum(Card.GetBaseAttack)
-		else
-			return gyg:GetSum(Card.GetBaseAttack)
-		end
+		return g:GetSum(Card.GetBaseAttack)
 	end
 end

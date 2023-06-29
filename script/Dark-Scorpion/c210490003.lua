@@ -15,14 +15,12 @@ end
 s.listed_names={76922029,61587183}
 s.listed_series={0x1a}
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	local atk=re:GetHandler():GetBaseAttack()
 	if rp==1-tp and re:IsActiveType(TYPE_MONSTER) and Duel.IsChainDisablable(ev) then
-		e:SetLabel(atk)
 		return true
 	else return false end
 end
 function s.thfilter(c,e)
-	return (c:IsCode(76922029) or (c:IsSetCard(0x1a) and c:IsType(TYPE_MONSTER))) and c:IsAbleToHand() and c:GetAttack()<=e:GetLabel()
+	return (c:IsCode(76922029) or (c:IsSetCard(0x1a) and c:IsType(TYPE_MONSTER))) and c:IsAbleToHand()
 	and c:IsCanBeEffectTarget(e) and ((c:IsLocation(LOCATION_MZONE) and c:IsFaceup()) or c:IsLocation(LOCATION_GRAVE))
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
