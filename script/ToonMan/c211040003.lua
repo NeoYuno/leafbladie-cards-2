@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
     c:EnableReviveLimit()
-    Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),1,99)
+    Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsAttribute,ATTRIBUTE_WIND),1,1,Synchro.NonTuner(nil),1,99)
     --Search
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,0))
