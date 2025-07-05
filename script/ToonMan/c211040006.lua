@@ -70,7 +70,7 @@ s.listed_names={211040007}
 s.listed_series={0x0f6b,0x0f6c}
 
 function s.keithfilter(c)
-    return c:IsFaceup() and c:IsCode(60764609)
+    return c:IsFaceup() and c:IsCode(211040020)
 end
 function s.spcon(e,c)
 	if c==nil then return true end
@@ -82,7 +82,7 @@ end
 function s.tgfilter(c,tp,e)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP)
 		and c:IsLocation(LOCATION_GRAVE|LOCATION_REMOVED) and c:IsFaceup()
-		and c:IsCode(60764609) and c:IsPreviousControler(tp)
+		and c:IsCode(211040020) and c:IsPreviousControler(tp)
 		and c:IsReason(REASON_BATTLE|REASON_EFFECT)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
@@ -114,7 +114,7 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.thfilter(c)
-	return (c:ListsArchetype(SET_FIENDSMITH) or c:ListsArchetype(0x0f6c)) and c:IsSpellTrap() and c:IsAbleToHand()
+	return (c:ListsArchetype(0x0f6b) or c:ListsArchetype(0x0f6c)) and c:IsSpellTrap() and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
