@@ -1,13 +1,6 @@
 --Psi-Magnet Warrior Iota
 local s,id=GetID()
 function s.initial_effect(c)
-    --Normal Summon without Tribute
-    local e0=Effect.CreateEffect(c)
-    e0:SetDescription(aux.Stringid(id,0))
-    e0:SetType(EFFECT_TYPE_SINGLE)
-    e0:SetCode(EFFECT_SUMMON_PROC)
-    e0:SetCondition(s.ntcon)
-    c:RegisterEffect(e0)
     --Normal Summon
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,1))
