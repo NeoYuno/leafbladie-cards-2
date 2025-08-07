@@ -6,16 +6,16 @@ function s.initial_effect(c)
 	e0:SetType(EFFECT_TYPE_ACTIVATE)
 	e0:SetCode(EVENT_FREE_CHAIN)
 	c:RegisterEffect(e0)
-    -- Special Summon "Infinity" monster from hand
+    -- Search
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,0))
-    e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+    e1:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
     e1:SetType(EFFECT_TYPE_IGNITION)
     e1:SetRange(LOCATION_SZONE)
     e1:SetCountLimit(1,id)
-    e1:SetCost(s.spcost)
-    e1:SetTarget(s.sptg)
-    e1:SetOperation(s.spop)
+    e1:SetCost(s.thcost)
+    e1:SetTarget(s.thtg)
+    e1:SetOperation(s.thop)
     c:RegisterEffect(e1)
     -- Once per Duel: Send this card to GY to steal and convert monster
     local e2=Effect.CreateEffect(c)
@@ -32,31 +32,26 @@ function s.initial_effect(c)
 end
 s.listed_series={0x0f7c}
 
--- Discard cost
--- Send 1 card from hand to GY as cost
-function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
     local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil)
     Duel.SendtoGrave(g,REASON_COST)
 end
-
--- Special Summon target
-function s.spfilter(c,e,tp)
-    return c:IsSetCard(0x0f7c) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+function s.thfilter(c)
+	return c:IsSetCard(0x0f7c) and c:IsMonster() and c:IsAbleToHand()
 end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-        and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,nil,e,tp) end
-    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK|LOCATION_GRAVE,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK|LOCATION_GRAVE)
 end
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
-    if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-    local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-    if #g>0 then
-        Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
-    end
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.thfilter),tp,LOCATION_DECK|LOCATION_GRAVE,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
+	end
 end
 
 -- Take control and transform monster
