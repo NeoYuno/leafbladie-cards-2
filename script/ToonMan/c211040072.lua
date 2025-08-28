@@ -11,40 +11,28 @@ function s.initial_effect(c)
 	e1:SetCondition(s.indcon)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
-    --
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetCode(EVENT_FREE_CHAIN)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1,id)
-	e2:SetHintTiming(0,TIMINGS_CHECK_MONSTER+TIMING_END_PHASE)
-	e2:SetCost(Cost.DetachFromSelf(1))
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.operation)
-	c:RegisterEffect(e2)
     --Detach 1, give Mythisch monster buff effect
-	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE)
-	e3:SetType(EFFECT_TYPE_IGNITION)
-    e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1)
-	e3:SetCost(Cost.DetachFromSelf(1))
-	e3:SetTarget(s.bufftg)
-	e3:SetOperation(s.buffop)
-	c:RegisterEffect(e3)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+    e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
+	e2:SetCost(Cost.DetachFromSelf(1))
+	e2:SetTarget(s.bufftg)
+	e2:SetOperation(s.buffop)
+	c:RegisterEffect(e2)
     --On attack, draw 2 and apply effect
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,2))
-	e4:SetCategory(CATEGORY_DRAW)
-	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e4:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e4:SetCountLimit(1)
-	e4:SetTarget(s.drtg)
-	e4:SetOperation(s.drop)
-	c:RegisterEffect(e4)
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,2))
+	e3:SetCategory(CATEGORY_DRAW)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e3:SetCountLimit(1)
+	e3:SetTarget(s.drtg)
+	e3:SetOperation(s.drop)
+	c:RegisterEffect(e3)
 end
 s.listed_series={0xf8a}
 s.listed_names={211040071}
@@ -63,41 +51,6 @@ function s.filter(c,tp)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil,tp) end
-end
-
---trigger Moon Gate’s effect
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstMatchingCard(s.filter,tp,LOCATION_MZONE,0,nil,tp)
-	if not tc then return end
-
-	-- get all effects registered to Moon Gate
-	local effs={tc:GetCardEffect()}
-	local usable={}
-	for _,te in ipairs(effs) do
-		-- only usable monster/spell-like effects (ignition/quick, etc.)
-		if te:IsActivatable(tp,true,true) then
-			table.insert(usable,te)
-		end
-	end
-
-	if #usable==0 then return end
-	local choice=1
-	if #usable>1 then
-		local ops={}
-		for i,te in ipairs(usable) do
-			table.insert(ops,te:GetDescription())
-		end
-		choice=Duel.SelectOption(tp,table.unpack(ops))+1
-	end
-
-	local te=usable[choice]
-	if te then
-        Duel.Hint(HINT_CARD,0,id)
-		local tg=te:GetTarget()
-		local op=te:GetOperation()
-		if tg then tg(te,tp,eg,ep,ev,re,r,rp,1) end
-		if op then op(te,tp,eg,ep,ev,re,r,rp) end
-	end
 end
 
 function s.bufffilter(c)
